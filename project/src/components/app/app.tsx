@@ -9,32 +9,34 @@ import Player from '../player/player';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../../const';
+import { Film } from '../../types/film';
 
 type AppProps = {
   title: string,
   genre: string,
-  releaseYear: number
+  releaseYear: number,
+  films: Film[],
 }
 
-function App({ title, genre, releaseYear }: AppProps): JSX.Element {
+function App({ title, genre, releaseYear, films }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Root}>
-          <Main title={title} genre={genre} releaseYear={releaseYear} />
+          <Main title={title} genre={genre} releaseYear={releaseYear} films={films} />
         </Route>
         <Route exact path={AppRoute.Login}>
           <SignIn />
         </Route>
-        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList />} authorizationStatus={AuthorizationStatus.NoAuth}></PrivateRoute>
+        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />} authorizationStatus={AuthorizationStatus.NoAuth}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
-          <MoviePage />
+          <MoviePage films={films} film={films[0]} />
         </Route>
         <Route exact path={AppRoute.AddReview}>
-          <AddReview />
+          <AddReview film={films[1]} />
         </Route>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <Player film={films[2]} />
         </Route>
         <Route>
           <NotFound />

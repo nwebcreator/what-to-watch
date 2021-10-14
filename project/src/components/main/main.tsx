@@ -1,13 +1,15 @@
-import Card from '../card/card';
+import { Film } from '../../types/film';
 import Logo from '../logo/logo';
+import FilmsList from '../films-list/films-list';
 
 type MainProps = {
   title: string,
   genre: string,
-  releaseYear: number
+  releaseYear: number,
+  films: Film[],
 }
 
-function Main({ title, genre, releaseYear }: MainProps): JSX.Element {
+function Main({ title, genre, releaseYear, films }: MainProps): JSX.Element {
   return (
     <>
       <section className="film-card">
@@ -87,7 +89,7 @@ function Main({ title, genre, releaseYear }: MainProps): JSX.Element {
               <a href="/#" className="catalog__genres-link">Horror</a>
             </li>
             <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Kids & Family</a>
+              <a href="/#" className="catalog__genres-link">Kids &apm; Family</a>
             </li>
             <li className="catalog__genres-item">
               <a href="/#" className="catalog__genres-link">Romance</a>
@@ -100,28 +102,7 @@ function Main({ title, genre, releaseYear }: MainProps): JSX.Element {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-          </div>
+          <FilmsList films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
