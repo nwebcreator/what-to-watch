@@ -7,12 +7,11 @@ type FilmsListProps = {
 }
 
 function FilmsList({ films }: FilmsListProps): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeFilmId, setActiveFilmId] = useState(0);
+  const [activeFilmId, setActiveFilmId] = useState<number | undefined>(undefined);
 
   return (
     <div className="catalog__films-list">
-      {films.map((film) => <Card key={film.id} film={film} onMouseMove={() => setActiveFilmId(film.id)} onMouseLeave={() => setActiveFilmId(0)} />)}
+      {films.map((film) => <Card key={film.id} film={film} isActive={activeFilmId === film.id} onMouseMove={() => setActiveFilmId(film.id)} onMouseLeave={() => setActiveFilmId(undefined)} />)}
     </div>
   );
 }
