@@ -10,4 +10,12 @@ const getFormatedDuration = (duration: number): string => {
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 };
 
-export { getFormatedDuration };
+const formatStarring = (starring: string[]): string => {
+  if (starring.length > 4) {
+    return `${starring.slice(0, 4).join(', ')} and other`;
+  }
+
+  return starring.join(', ');
+};
+
+export { getFormatedDuration, formatStarring };
