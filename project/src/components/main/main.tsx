@@ -1,15 +1,27 @@
-import { Film } from '../../types/film';
 import Logo from '../logo/logo';
 import FilmsList from '../films-list/films-list';
+import GenresFilter from '../genres-filter/genres-filter';
+import { State } from '../../types/state';
+import { connect, ConnectedProps } from 'react-redux';
 
 type MainProps = {
   title: string,
   genre: string,
-  releaseYear: number,
-  films: Film[],
+  releaseYear: number
 }
 
-function Main({ title, genre, releaseYear, films }: MainProps): JSX.Element {
+const mapStateToProps = ({ sourcedFilms, films }: State) => ({
+  sourcedFilms,
+  films,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MainProps;
+
+function Main(props: ConnectedComponentProps): JSX.Element {
+  const { title, genre, releaseYear, sourcedFilms, films } = props;
   return (
     <>
       <section className="film-card">
@@ -68,40 +80,7 @@ function Main({ title, genre, releaseYear, films }: MainProps): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
-
+          <GenresFilter genres={Array.from(new Set(sourcedFilms.map((film) => film.genre))).sort()} />
           <FilmsList films={films} />
 
           <div className="catalog__more">
@@ -121,4 +100,5 @@ function Main({ title, genre, releaseYear, films }: MainProps): JSX.Element {
   );
 }
 
-export default Main;
+export { Main };
+export default connector(Main);
