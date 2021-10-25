@@ -89,7 +89,7 @@ function Main({ title, genre, releaseYear, films }: MainProps): JSX.Element {
               <a href="/#" className="catalog__genres-link">Horror</a>
             </li>
             <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Kids &apm; Family</a>
+              <a href="/#" className="catalog__genres-link">Kids & Family</a>
             </li>
             <li className="catalog__genres-item">
               <a href="/#" className="catalog__genres-link">Romance</a>

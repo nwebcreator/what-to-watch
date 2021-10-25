@@ -30,7 +30,7 @@ function App({ title, genre, releaseYear, films }: AppProps): JSX.Element {
         </Route>
         <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />} authorizationStatus={AuthorizationStatus.NoAuth}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
-          <MoviePage films={films} film={films[0]} />
+          <MoviePage moreLikeThisFilms={films.slice(4)} films={films} />
         </Route>
         <Route exact path={AppRoute.AddReview}>
           <AddReview film={films[1]} />
