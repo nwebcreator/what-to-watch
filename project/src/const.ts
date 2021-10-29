@@ -4,4 +4,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const allGenresName = 'All genres';
+export const FILMS_PER_STEP = 8;
+
+export const ALL_GENRES_NAME = 'All genres';
