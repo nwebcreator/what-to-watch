@@ -3,6 +3,7 @@ import { Film } from './film';
 export enum ActionType {
   ChangeGenre = 'wtw/changeGenre',
   StoreFilms = 'wtw/storeFilms',
+  ChangeShowedFilms = 'wtw/changeShowedFilms',
 }
 
 export type ChangeGenreAction = {
@@ -15,4 +16,9 @@ export type StoreFilmsAction = {
   payload: Film[];
 };
 
-export type Actions = ChangeGenreAction | StoreFilmsAction;
+export type ChangeShowedFilmsAction = {
+  type: ActionType.ChangeShowedFilms;
+  payload: number;
+}
+
+export type Actions = ChangeGenreAction | StoreFilmsAction | ChangeShowedFilmsAction;

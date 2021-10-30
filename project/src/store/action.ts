@@ -10,3 +10,8 @@ export const storeFilms = (films: Film[]) => ({
   type: ActionType.StoreFilms,
   payload: films,
 } as const);
+
+export const changeShowedFilms = (showedFilms: number) => ({
+  type: ActionType.ChangeShowedFilms,
+  payload: showedFilms,
+} as const);

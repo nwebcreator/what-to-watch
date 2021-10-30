@@ -56,7 +56,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
         </Route>
         <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />} authorizationStatus={AuthorizationStatus.NoAuth}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
-          <MoviePage moreLikeThisFilms={films.slice(4)} films={films} />
+          <MoviePage moreLikeThisFilms={films.slice(0, 4)} films={films} />
         </Route>
         <Route exact path={AppRoute.AddReview}>
           <AddReview film={films[1]} />

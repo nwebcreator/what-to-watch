@@ -3,6 +3,10 @@ import FilmsList from '../films-list/films-list';
 import GenresFilter from '../genres-filter/genres-filter';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
+import { changeShowedFilms } from '../../store/action';
+import { Actions } from '../../types/action';
+import { Dispatch, useEffect } from 'react';
+import { FILMS_PER_STEP } from '../../const';
 
 type MainProps = {
   title: string,
@@ -10,18 +14,28 @@ type MainProps = {
   releaseYear: number
 }
 
-const mapStateToProps = ({ sourcedFilms, films }: State) => ({
-  sourcedFilms,
+const mapStateToProps = ({ films }: State) => ({
   films,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onChangeShowedFilms(showedFilms: number) {
+    dispatch(changeShowedFilms(showedFilms));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & MainProps;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const { title, genre, releaseYear, sourcedFilms, films } = props;
+  const { title, genre, releaseYear, films, onChangeShowedFilms } = props;
+
+  useEffect(()=> {
+    onChangeShowedFilms(FILMS_PER_STEP);
+  });
+
   return (
     <>
       <section className="film-card">
@@ -80,12 +94,8 @@ function Main(props: ConnectedComponentProps): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresFilter genres={Array.from(new Set(sourcedFilms.map((film) => film.genre))).sort()} />
+          <GenresFilter />
           <FilmsList films={films} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
         </section>
 
         <footer className="page-footer">

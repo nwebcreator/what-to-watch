@@ -4,4 +4,5 @@ export type State = {
   activeGenre: string,
   sourcedFilms: Film[],
   films: Film[],
+  showedFilms: number,
 };
