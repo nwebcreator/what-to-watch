@@ -1,4 +1,4 @@
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Router as BrowserRouter } from 'react-router-dom';
 import { AppRoute } from '../../routes';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
@@ -8,14 +8,11 @@ import AddReview from '../add-review/add-review';
 import Player from '../player/player';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import { AuthorizationStatus } from '../../const';
-import { Film } from '../../types/film';
 import { State } from '../../types/state';
-import { Dispatch, useEffect } from 'react';
-import { Actions } from '../../types/action';
-import { storeFilms } from '../../store/action';
 import { connect, ConnectedProps } from 'react-redux';
-import * as mocks from '../../mocks/films';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { isCheckedAuth } from '../../utils';
+import browserHistory from '../../browser-history';
 
 type AppProps = {
   title: string,
@@ -23,30 +20,28 @@ type AppProps = {
   releaseYear: number,
 }
 
-const mapStateToProps = ({ films }: State) => ({
+const mapStateToProps = ({ authorizationStatus, isDataLoaded, films }: State) => ({
+  authorizationStatus,
+  isDataLoaded,
   films,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onStoreFilms(films: Film[]) {
-    dispatch(storeFilms(films));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & AppProps;
 
 function App(props: ConnectedComponentProps): JSX.Element {
-  const { title, genre, releaseYear, films, onStoreFilms } = props;
+  const { title, genre, releaseYear, authorizationStatus, isDataLoaded, films } = props;
 
-  useEffect(() => {
-    onStoreFilms(mocks.films);
-  }, [onStoreFilms]);
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Root}>
           <Main title={title} genre={genre} releaseYear={releaseYear} />
@@ -54,7 +49,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
         <Route exact path={AppRoute.Login}>
           <SignIn />
         </Route>
-        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />} authorizationStatus={AuthorizationStatus.NoAuth}></PrivateRoute>
+        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
           <MoviePage moreLikeThisFilms={films.slice(0, 4)} films={films} />
         </Route>

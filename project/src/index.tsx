@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './components/app/app';
 import { reducer } from './store/reducer';
+import { createAPI } from './services/api';
+import { requireAuthorization } from './store/action';
+import { AuthorizationStatus } from './const';
+import { ThunkAppDispatch } from './types/action';
+import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
+import { redirect } from './store/middlewares/redirect';
 
 const mainProps = {
   title: 'The Grand Budapest Hotel',
@@ -12,7 +19,17 @@ const mainProps = {
   releaseYear: 2014,
 };
 
-const store = createStore(reducer, composeWithDevTools());
+const api = createAPI(
+  () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
+);
+
+const store = createStore(reducer, composeWithDevTools(
+  applyMiddleware(thunk.withExtraArgument(api)),
+  applyMiddleware(redirect),
+));
+
+(store.dispatch as ThunkAppDispatch)(checkAuthAction());
+(store.dispatch as ThunkAppDispatch)(fetchFilmsAction());
 
 ReactDOM.render(
   <React.StrictMode>

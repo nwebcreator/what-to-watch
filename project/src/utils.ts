@@ -1,3 +1,5 @@
+import { AuthorizationStatus } from './const';
+
 const getHoursAndMinutes = (duration: number) => {
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
@@ -5,12 +7,12 @@ const getHoursAndMinutes = (duration: number) => {
   return { hours, minutes };
 };
 
-const getFormatedDuration = (duration: number): string => {
+export const getFormatedDuration = (duration: number): string => {
   const { hours, minutes } = getHoursAndMinutes(duration);
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 };
 
-const formatStarring = (starring: string[]): string => {
+export const formatStarring = (starring: string[]): string => {
   if (starring.length > 4) {
     return `${starring.slice(0, 4).join(', ')} and other`;
   }
@@ -18,4 +20,5 @@ const formatStarring = (starring: string[]): string => {
   return starring.join(', ');
 };
 
-export { getFormatedDuration, formatStarring };
+export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;

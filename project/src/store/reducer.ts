@@ -1,4 +1,4 @@
-import { ALL_GENRES_NAME, FILMS_PER_STEP } from '../const';
+import { ALL_GENRES_NAME, AuthorizationStatus, FILMS_PER_STEP } from '../const';
 import { Actions, ActionType } from '../types/action';
 import { State } from '../types/state';
 
@@ -7,6 +7,8 @@ const initialState: State = {
   sourcedFilms: [],
   films: [],
   showedFilms: FILMS_PER_STEP,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isDataLoaded: false,
 };
 
 const reducer = (state: State = initialState, action: Actions): State => {
@@ -19,10 +21,16 @@ const reducer = (state: State = initialState, action: Actions): State => {
 
       return { ...state, activeGenre, films: [...state.sourcedFilms].filter(((it) => it.genre === activeGenre)) };
     }
-    case ActionType.StoreFilms: {
-      const sourcedFilms = [...action.payload];
+    case ActionType.LoadFilms: {
+      const sourcedFilms = [...action.payload.films];
       const films = [...sourcedFilms];
       return { ...state, sourcedFilms, films };
+    }
+    case ActionType.RequireAuthorization: {
+      return { ...state, authorizationStatus: action.payload, isDataLoaded: true };
+    }
+    case ActionType.RequireLogout: {
+      return { ...state, authorizationStatus: AuthorizationStatus.NoAuth };
     }
     case ActionType.ChangeShowedFilms: {
       const showedFilms = action.payload;

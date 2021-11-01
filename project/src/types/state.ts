@@ -1,8 +1,11 @@
-import { Film } from './film';
+import { AuthorizationStatus } from '../const';
+import { Films } from './film';
 
 export type State = {
   activeGenre: string,
-  sourcedFilms: Film[],
-  films: Film[],
+  sourcedFilms: Films,
+  films: Films,
   showedFilms: number,
+  authorizationStatus: AuthorizationStatus,
+  isDataLoaded: boolean,
 };
