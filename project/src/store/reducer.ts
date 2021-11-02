@@ -8,6 +8,7 @@ const initialState: State = {
   films: [],
   showedFilms: FILMS_PER_STEP,
   authorizationStatus: AuthorizationStatus.Unknown,
+  authInfo: undefined,
   isDataLoaded: false,
 };
 
@@ -24,13 +25,13 @@ const reducer = (state: State = initialState, action: Actions): State => {
     case ActionType.LoadFilms: {
       const sourcedFilms = [...action.payload.films];
       const films = [...sourcedFilms];
-      return { ...state, sourcedFilms, films };
+      return { ...state, sourcedFilms, films, isDataLoaded: true };
     }
     case ActionType.RequireAuthorization: {
-      return { ...state, authorizationStatus: action.payload, isDataLoaded: true };
+      return { ...state, authorizationStatus: action.payload.authorizationStatus, authInfo: action.payload.authInfo };
     }
     case ActionType.RequireLogout: {
-      return { ...state, authorizationStatus: AuthorizationStatus.NoAuth };
+      return { ...state, authorizationStatus: AuthorizationStatus.NoAuth, authInfo: undefined };
     }
     case ActionType.ChangeShowedFilms: {
       const showedFilms = action.payload;

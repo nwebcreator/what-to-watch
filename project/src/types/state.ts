@@ -1,5 +1,6 @@
 import { AuthorizationStatus } from '../const';
 import { Films } from './film';
+import { AuthInfo  } from './auth-info';
 
 export type State = {
   activeGenre: string,
@@ -7,5 +8,6 @@ export type State = {
   films: Films,
   showedFilms: number,
   authorizationStatus: AuthorizationStatus,
+  authInfo?: AuthInfo,
   isDataLoaded: boolean,
 };

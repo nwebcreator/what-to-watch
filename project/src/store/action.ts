@@ -2,6 +2,7 @@ import { AuthorizationStatus } from '../const';
 import { AppRoute } from '../routes';
 import { ActionType } from '../types/action';
 import { Films } from '../types/film';
+import { AuthInfo } from '../types/auth-info';
 
 export const changeGenre = (genre: string) => ({
   type: ActionType.ChangeGenre,
@@ -20,9 +21,9 @@ export const changeShowedFilms = (showedFilms: number) => ({
   payload: showedFilms,
 } as const);
 
-export const requireAuthorization = (authStatus: AuthorizationStatus) => ({
+export const requireAuthorization = (authorizationStatus: AuthorizationStatus, authInfo?: AuthInfo) => ({
   type: ActionType.RequireAuthorization,
-  payload: authStatus,
+  payload: { authorizationStatus, authInfo },
 } as const);
 
 export const requireLogout = () => ({
