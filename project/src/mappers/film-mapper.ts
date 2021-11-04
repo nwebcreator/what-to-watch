@@ -1,6 +1,6 @@
 import { Films } from '../types/film';
 
-export const mapToClient = (films: { [key: string]: unknown }[]): Films => films.map((it) => ({
+export const mapDataToFilms = (data: { [key: string]: unknown }[]): Films => data.map((it) => ({
   id: it['id'] as number,
   name: it['name'] as string,
   posterImage: it['poster_image'] as string,

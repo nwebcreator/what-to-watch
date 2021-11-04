@@ -1,31 +1,36 @@
 import { ThunkActionResult } from '../types/action';
 import { loadFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
-import { saveToken, dropToken, Token } from '../services/token';
+import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
 import { AppRoute } from '../routes';
-import { mapToClient } from '../mappers/film-mapper';
+import { mapDataToFilms } from '../mappers/film-mapper';
+import { mapDataToAuthInfo } from '../mappers/auth-info-mapper';
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<{ [key: string]: unknown }[]>(APIRoute.Films);
-    dispatch(loadFilms(mapToClient(data)));
+    dispatch(loadFilms(mapDataToFilms(data)));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.get(APIRoute.Login)
-      .then(() => {
-        dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      });
+    const { data } = await api.get<{ [key: string]: unknown }>(APIRoute.Login);
+    const authInfo = mapDataToAuthInfo(data);
+    const authorizationStatus = authInfo ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth;
+    dispatch(requireAuthorization(authorizationStatus, authInfo));
   };
 
 export const loginAction = ({ login: email, password }: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data: { token } } = await api.post<{ token: Token }>(APIRoute.Login, { email, password });
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(AppRoute.MyList));
+    const { data } = await api.post<{ [key: string]: unknown }>(APIRoute.Login, { email, password });
+    const authInfo = mapDataToAuthInfo(data);
+    if (authInfo) {
+      saveToken(authInfo.token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth, authInfo));
+    }
+
+    dispatch(redirectToRoute(AppRoute.Root));
   };
 
 
