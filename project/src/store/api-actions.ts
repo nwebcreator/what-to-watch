@@ -1,16 +1,42 @@
 import { ThunkActionResult } from '../types/action';
-import { loadFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
+import { loadFilm, loadFilms, loadReviews, loadSimilarFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
 import { AppRoute } from '../routes';
-import { mapDataToFilms } from '../mappers/film-mapper';
+import { mapDataToFilm } from '../mappers/film-mapper';
 import { mapDataToAuthInfo } from '../mappers/auth-info-mapper';
+import { Reviews } from '../types/review';
+import { AddReview } from '../types/add-review';
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<{ [key: string]: unknown }[]>(APIRoute.Films);
-    dispatch(loadFilms(mapDataToFilms(data)));
+    dispatch(loadFilms(data.map((it) => mapDataToFilm(it))));
+  };
+
+export const fethcSimilarFilmsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<{ [key: string]: unknown }[]>(APIRoute.SimilarFilms.replace('{id}', id.toString()));
+    dispatch(loadSimilarFilms(data.map((it) => mapDataToFilm(it))));
+  };
+
+export const fetchReviewsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getSetate, api): Promise<void> => {
+    const { data } = await api.get<Reviews>(APIRoute.FilmReviews.replace('{id}', id.toString()));
+    dispatch(loadReviews(data));
+  };
+
+export const fetchFilmAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<{ [key: string]: unknown }>(`${APIRoute.Films}/${id}`);
+    dispatch(loadFilm(mapDataToFilm(data)));
+  };
+
+export const addReviewAction = (id: number, review: AddReview): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.post<Reviews>(APIRoute.FilmReviews.replace('{id}', id.toString()), review);
+    dispatch(loadReviews(data));
   };
 
 export const checkAuthAction = (): ThunkActionResult =>

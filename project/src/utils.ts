@@ -1,5 +1,7 @@
 import { AuthorizationStatus } from './const';
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const getHoursAndMinutes = (duration: number) => {
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
@@ -18,6 +20,18 @@ export const formatStarring = (starring: string[]): string => {
   }
 
   return starring.join(', ');
+};
+
+export const formatReviewDate = (date: Date | string): string => {
+  if (typeof date === 'string') {
+    date = new Date(date);
+  }
+
+  const month = date.getMonth();
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  return `${months[month]} ${day}, ${year}`;
 };
 
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>

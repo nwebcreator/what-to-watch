@@ -51,13 +51,16 @@ function App(props: ConnectedComponentProps): JSX.Element {
         </Route>
         <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
-          <MoviePage moreLikeThisFilms={films.slice(0, 4)} films={films} />
+          <MoviePage />
         </Route>
         <Route exact path={AppRoute.AddReview}>
-          <AddReview film={films[1]} />
+          <AddReview />
         </Route>
         <Route exact path={AppRoute.Player}>
           <Player film={films[2]} />
+        </Route>
+        <Route exact path={AppRoute.NotFound}>
+          <NotFound />
         </Route>
         <Route>
           <NotFound />

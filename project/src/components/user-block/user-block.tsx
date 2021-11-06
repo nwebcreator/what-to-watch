@@ -35,12 +35,7 @@ function UserBlock(props: PropsFromRedux): JSX.Element {
           </div>
         </li>
         <li className="user-block__item">
-          <Link className="user-block__link" to="/" onClick={(evt) => {
-            evt.preventDefault();
-            logout();
-          }}
-          >Sign out
-          </Link>
+          <button className="user-block__link" style={{ border: 'none', background: 'none' }} onClick={() => logout()}>Sign out</button>
         </li>
       </ul>
     );

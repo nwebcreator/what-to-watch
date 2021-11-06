@@ -1,6 +1,6 @@
-import { Films } from '../types/film';
+import { Film } from '../types/film';
 
-export const mapDataToFilms = (data: { [key: string]: unknown }[]): Films => data.map((it) => ({
+export const mapDataToFilm = (it: { [key: string]: unknown }): Film => ({
   id: it['id'] as number,
   name: it['name'] as string,
   posterImage: it['poster_image'] as string,
@@ -18,4 +18,4 @@ export const mapDataToFilms = (data: { [key: string]: unknown }[]): Films => dat
   genre: it['genre'] as string,
   released: it['released'] as number,
   isFavorite: it['is_favorite'] as boolean,
-})) as Films;
+}) as Film;

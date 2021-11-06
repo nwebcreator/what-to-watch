@@ -6,6 +6,9 @@ const initialState: State = {
   activeGenre: ALL_GENRES_NAME,
   sourcedFilms: [],
   films: [],
+  reviews: [],
+  similarFilms: [],
+  film: undefined,
   showedFilms: FILMS_PER_STEP,
   authorizationStatus: AuthorizationStatus.Unknown,
   authInfo: undefined,
@@ -26,6 +29,18 @@ const reducer = (state: State = initialState, action: Actions): State => {
       const sourcedFilms = [...action.payload.films];
       const films = [...sourcedFilms];
       return { ...state, sourcedFilms, films, isDataLoaded: true };
+    }
+    case ActionType.LoadSimilarFilms: {
+      const similarFilms = [...action.payload.similarFilms];
+      return { ...state, similarFilms };
+    }
+    case ActionType.LoadReviews: {
+      const reviews = action.payload.reviews;
+      return { ...state, reviews };
+    }
+    case ActionType.LoadFilm: {
+      const { film } = action.paylod;
+      return { ...state, film };
     }
     case ActionType.RequireAuthorization: {
       return { ...state, authorizationStatus: action.payload.authorizationStatus, authInfo: action.payload.authInfo };

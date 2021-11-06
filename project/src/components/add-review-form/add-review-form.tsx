@@ -1,47 +1,41 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { AddReview } from '../../types/add-review';
 
-export default function AddReviewForm(): JSX.Element {
-  const [reviewText, setReviewText] = useState('');
+type AddReviewFromProps = {
+  onSubmit: (review: AddReview) => void,
+};
+
+export default function AddReviewForm({ onSubmit }: AddReviewFromProps): JSX.Element {
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(5);
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (rating !== undefined && comment) {
+      onSubmit({
+        rating: rating,
+        comment: comment,
+      });
+    }
+  };
 
   return (
     <div className="add-review">
-      <form action="#" className="add-review__form">
+      <form action="#" className="add-review__form" onSubmit={handleSubmit}>
         <div className="rating">
           <div className="rating__stars">
-            <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-            <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-            <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-            <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-            <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked />
-            <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-            <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-            <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-            <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-            <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-            <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-            <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-            <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-            <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-            <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-            <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-            <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-            <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-            <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-            <label className="rating__label" htmlFor="star-1">Rating 1</label>
+            {Array.from({ length: 10 }, (_, i) => i + 1).reverse().map((it) => (
+              [
+                <input key={`input-${it}`} className="rating__input" id={`star-${it}`} type="radio" name="rating" value={it} checked={rating === it} onChange={() => setRating(it)} />,
+                <label key={`label-${it}`} className="rating__label" htmlFor={`star-${it}`}>Rating {it}</label>,
+              ]
+            ))}
           </div>
         </div>
 
         <div className="add-review__text">
-          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" onChange={(evt) => setReviewText(evt.target.value)}>{reviewText}</textarea>
+          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={comment} onChange={(evt) => setComment(evt.target.value)}></textarea>
           <div className="add-review__submit">
             <button className="add-review__btn" type="submit">Post</button>
           </div>

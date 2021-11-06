@@ -1,17 +1,19 @@
 import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Film } from '../../types/film';
+import { Reviews } from '../../types/review';
 import TabDetails from '../tab-details/tab-details';
 import TabOverview from '../tab-overview/tab-overview';
 import TabReviews from '../tab-reviews/tab-reviews';
 
 type TabsProps = {
   film: Film;
+  reviews: Reviews;
 }
 
 type PossibleTabs = '#overview' | '#details' | '#reviews';
 
-function Tabs({ film }: TabsProps): JSX.Element {
+function Tabs({ film, reviews }: TabsProps): JSX.Element {
   const location = useLocation();
   const currentTab: PossibleTabs = location.hash as PossibleTabs || '#overview';
 
@@ -22,7 +24,7 @@ function Tabs({ film }: TabsProps): JSX.Element {
       case '#details':
         return <TabDetails film={film} />;
       case '#reviews':
-        return <TabReviews />;
+        return <TabReviews reviews={reviews} />;
     }
   };
 
