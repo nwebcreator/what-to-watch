@@ -1,6 +1,6 @@
 import { Film } from '../types/film';
 
-export const mapDataToFilm = (it: { [key: string]: unknown }): Film => ({
+export const mapDataToFilm = (it: Record<string, unknown>): Film => ({
   id: it['id'] as number,
   name: it['name'] as string,
   posterImage: it['poster_image'] as string,

@@ -7,13 +7,13 @@ type TabReviewProps = {
 
 function TabReviews({ reviews }: TabReviewProps): JSX.Element {
   const middleIndex = Math.round(reviews.length / 2);
-  const leftReviews = reviews.slice(0, middleIndex);
-  const rightReviews = reviews.slice(middleIndex);
+  const firstBlockReviews = reviews.slice(0, middleIndex);
+  const secondBlockReviews = reviews.slice(middleIndex);
 
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
-        {leftReviews.map((it) => (
+        {firstBlockReviews.map((it) => (
           <div key={it.id} className="review">
             <blockquote className="review__quote">
               <p className="review__text">{it.comment}</p>
@@ -28,7 +28,7 @@ function TabReviews({ reviews }: TabReviewProps): JSX.Element {
           </div>))}
       </div>
       <div className="film-card__reviews-col">
-        {rightReviews.map((it) => (
+        {secondBlockReviews.map((it) => (
           <div key={it.id} className="review">
             <blockquote className="review__quote">
               <p className="review__text">{it.comment}</p>

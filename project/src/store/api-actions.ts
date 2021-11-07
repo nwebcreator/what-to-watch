@@ -11,13 +11,13 @@ import { AddReview } from '../types/add-review';
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<{ [key: string]: unknown }[]>(APIRoute.Films);
+    const { data } = await api.get<Record<string, unknown>[]>(APIRoute.Films);
     dispatch(loadFilms(data.map((it) => mapDataToFilm(it))));
   };
 
 export const fethcSimilarFilmsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<{ [key: string]: unknown }[]>(APIRoute.SimilarFilms.replace('{id}', id.toString()));
+    const { data } = await api.get<Record<string, unknown>[]>(APIRoute.SimilarFilms.replace('{id}', id.toString()));
     dispatch(loadSimilarFilms(data.map((it) => mapDataToFilm(it))));
   };
 
@@ -29,7 +29,7 @@ export const fetchReviewsAction = (id: number): ThunkActionResult =>
 
 export const fetchFilmAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const { data } = await api.get<{ [key: string]: unknown }>(`${APIRoute.Films}/${id}`);
+    const { data } = await api.get<Record<string, unknown>>(`${APIRoute.Films}/${id}`);
     dispatch(loadFilm(mapDataToFilm(data)));
   };
 
@@ -41,7 +41,7 @@ export const addReviewAction = (id: number, review: AddReview): ThunkActionResul
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.get<{ [key: string]: unknown }>(APIRoute.Login);
+    const { data } = await api.get<Record<string, unknown>>(APIRoute.Login);
     const authInfo = mapDataToAuthInfo(data);
     const authorizationStatus = authInfo ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth;
     dispatch(requireAuthorization(authorizationStatus, authInfo));
@@ -49,7 +49,7 @@ export const checkAuthAction = (): ThunkActionResult =>
 
 export const loginAction = ({ login: email, password }: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.post<{ [key: string]: unknown }>(APIRoute.Login, { email, password });
+    const { data } = await api.post<Record<string, unknown>>(APIRoute.Login, { email, password });
     const authInfo = mapDataToAuthInfo(data);
     if (authInfo) {
       saveToken(authInfo.token);
