@@ -7,11 +7,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './components/app/app';
 import { reducer } from './store/reducer';
 import { createAPI } from './services/api';
-import { requireAuthorization } from './store/action';
+import { redirectToRoute, requireAuthorization } from './store/action';
 import { AuthorizationStatus } from './const';
 import { ThunkAppDispatch } from './types/action';
 import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
 import { redirect } from './store/middlewares/redirect';
+import { AppRoute } from './routes';
 
 const mainProps = {
   title: 'The Grand Budapest Hotel',
@@ -21,6 +22,7 @@ const mainProps = {
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
+  () => store.dispatch(redirectToRoute(AppRoute.NotFound)),
 );
 
 const store = createStore(reducer, composeWithDevTools(

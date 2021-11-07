@@ -1,18 +1,60 @@
-import { useParams } from 'react-router-dom';
-import { Film } from '../../types/film';
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { AuthorizationStatus } from '../../const';
+import { fetchFilmAction, fetchReviewsAction, fethcSimilarFilmsAction } from '../../store/api-actions';
+import { ThunkAppDispatch } from '../../types/action';
+import { State } from '../../types/state';
 import FilmsList from '../films-list/films-list';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';
 import Tabs from '../tabs/tabs';
 import UserBlock from '../user-block/user-block';
 
-type MoviePageProps = {
-  moreLikeThisFilms: Film[];
-  films: Film[];
-}
+const mapStateToProps = ({ film, reviews, similarFilms, authorizationStatus }: State) => ({
+  film,
+  reviews,
+  similarFilms,
+  authorizationStatus,
+});
 
-function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchFilm(id: number) {
+    dispatch(fetchFilmAction(id));
+  },
+  fetchSimilarFilms(id: number) {
+    dispatch(fethcSimilarFilmsAction(id));
+  },
+  fetchReviews(id: number) {
+    dispatch(fetchReviewsAction(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux;
+
+function MoviePage({ film, similarFilms, reviews, authorizationStatus, fetchFilm, fetchSimilarFilms, fetchReviews }: ConnectedComponentProps): JSX.Element {
   const id = parseInt(useParams<{ id: string }>().id, 10);
-  const film = films.find((x) => x.id === id) as Film;
+
+  useEffect(() => {
+    fetchFilm(id);
+  }, [fetchFilm, id]);
+
+  useEffect(() => {
+    fetchSimilarFilms(id);
+  }, [fetchSimilarFilms, id]);
+
+  useEffect(() => {
+    fetchReviews(id);
+  }, [fetchReviews, id]);
+
+  if (!film) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (<>
     <section className="film-card film-card--full">
@@ -26,7 +68,7 @@ function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
         <header className="page-header film-card__head">
           <Logo />
 
-          <UserBlock/>
+          <UserBlock />
         </header>
 
         <div className="film-card__wrap">
@@ -44,13 +86,15 @@ function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
                 </svg>
                 <span>Play</span>
               </button>
-              <button className="btn btn--list film-card__button" type="button">
-                <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
-                </svg>
-                <span>My list</span>
-              </button>
-              <a href="add-review.html" className="btn film-card__button">Add review</a>
+              {authorizationStatus === AuthorizationStatus.Auth &&
+                <button className="btn btn--list film-card__button" type="button">
+                  <svg viewBox="0 0 19 20" width="19" height="20">
+                    <use xlinkHref="#add"></use>
+                  </svg>
+                  <span>My list</span>
+                </button>}
+
+              {authorizationStatus === AuthorizationStatus.Auth && <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>}
             </div>
           </div>
         </div>
@@ -61,7 +105,7 @@ function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
           <div className="film-card__poster film-card__poster--big">
             <img src={film.posterImage} alt={film.name} width="218" height="327" />
           </div>
-          <Tabs film={film}></Tabs>
+          <Tabs film={film} reviews={reviews}></Tabs>
         </div>
       </div>
     </section>
@@ -70,7 +114,7 @@ function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
 
-        <FilmsList films={moreLikeThisFilms} />
+        <FilmsList films={similarFilms.filter((it) => it.id !== id)} />
       </section>
 
       <footer className="page-footer">
@@ -84,4 +128,5 @@ function MoviePage({ moreLikeThisFilms, films }: MoviePageProps): JSX.Element {
   );
 }
 
-export default MoviePage;
+export { MoviePage };
+export default connector(MoviePage);

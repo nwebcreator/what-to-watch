@@ -1,13 +1,49 @@
-import { Film } from '../../types/film';
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { AppRoute } from '../../routes';
+import { redirectToRoute } from '../../store/action';
+import { addReviewAction, fetchFilmAction } from '../../store/api-actions';
+import { ThunkAppDispatch } from '../../types/action';
+import { AddReview as AddReviewModel } from '../../types/add-review';
+import { State } from '../../types/state';
 import AddReviewForm from '../add-review-form/add-review-form';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 
-type AddReviewProps = {
-  film: Film
-}
+const mapStateToProps = ({ film }: State) => ({
+  film,
+});
 
-export default function AddReview({ film }: AddReviewProps): JSX.Element {
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchFilm(id: number) {
+    dispatch(fetchFilmAction(id));
+  },
+  addReview(id: number, review: AddReviewModel) {
+    dispatch(addReviewAction(id, review));
+    dispatch(redirectToRoute(`${AppRoute.Film}#reviews`.replace(':id', id.toString())));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux;
+
+function AddReview({ film, fetchFilm, addReview }: ConnectedComponentProps): JSX.Element {
+  const id = parseInt(useParams<{ id: string }>().id, 10);
+
+  useEffect(() => {
+    fetchFilm(id);
+  }, [fetchFilm, id]);
+
+  if (!film) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
@@ -31,7 +67,7 @@ export default function AddReview({ film }: AddReviewProps): JSX.Element {
             </ul>
           </nav>
 
-          <UserBlock/>
+          <UserBlock />
         </header>
 
         <div className="film-card__poster film-card__poster--small">
@@ -39,8 +75,11 @@ export default function AddReview({ film }: AddReviewProps): JSX.Element {
         </div>
       </div>
 
-      <AddReviewForm />
+      <AddReviewForm onSubmit={(review) => addReview(id, review)} />
 
     </section>
   );
 }
+
+export { AddReview };
+export default connector(AddReview);
