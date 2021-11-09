@@ -5,8 +5,8 @@ import { Reviews } from './review';
 
 export type State = {
   activeGenre: string,
-  sourcedFilms: Films,
   films: Films,
+  favoriteFilms: Films,
   film?: Film,
   reviews: Reviews,
   similarFilms: Films,

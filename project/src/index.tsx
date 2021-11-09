@@ -1,18 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './components/app/app';
 import { reducer } from './store/reducer';
 import { createAPI } from './services/api';
 import { redirectToRoute, requireAuthorization } from './store/action';
 import { AuthorizationStatus } from './const';
-import { ThunkAppDispatch } from './types/action';
 import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
 import { redirect } from './store/middlewares/redirect';
 import { AppRoute } from './routes';
+import { configureStore } from '@reduxjs/toolkit';
 
 const mainProps = {
   title: 'The Grand Budapest Hotel',
@@ -25,13 +22,18 @@ const api = createAPI(
   () => store.dispatch(redirectToRoute(AppRoute.NotFound)),
 );
 
-const store = createStore(reducer, composeWithDevTools(
-  applyMiddleware(thunk.withExtraArgument(api)),
-  applyMiddleware(redirect),
-));
+const store = configureStore({
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: api,
+      },
+    }).concat(redirect),
+});
 
-(store.dispatch as ThunkAppDispatch)(checkAuthAction());
-(store.dispatch as ThunkAppDispatch)(fetchFilmsAction());
+store.dispatch(checkAuthAction());
+store.dispatch(fetchFilmsAction());
 
 ReactDOM.render(
   <React.StrictMode>

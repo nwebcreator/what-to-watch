@@ -1,13 +1,11 @@
 import Logo from '../logo/logo';
-import FilmsList from '../films-list/films-list';
-import GenresFilter from '../genres-filter/genres-filter';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
-import { changeShowedFilms } from '../../store/action';
-import { Actions } from '../../types/action';
-import { Dispatch, useEffect } from 'react';
-import { FILMS_PER_STEP } from '../../const';
+import { memo, useEffect } from 'react';
 import UserBlock from '../user-block/user-block';
+import FilmsList from '../films-list/films-list';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilms } from '../../store/data/selectors';
+import { changeShowedFilms } from '../../store/action';
+import { FILMS_PER_STEP } from '../../const';
 
 type MainProps = {
   title: string,
@@ -15,27 +13,15 @@ type MainProps = {
   releaseYear: number
 }
 
-const mapStateToProps = ({ films }: State) => ({
-  films,
-});
+function Main(props: MainProps): JSX.Element {
+  const { title, genre, releaseYear } = props;
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onChangeShowedFilms(showedFilms: number) {
-    dispatch(changeShowedFilms(showedFilms));
-  },
-});
+  const films = useSelector(getFilms);
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & MainProps;
-
-function Main(props: ConnectedComponentProps): JSX.Element {
-  const { title, genre, releaseYear, films, onChangeShowedFilms } = props;
-
-  useEffect(()=> {
-    onChangeShowedFilms(FILMS_PER_STEP);
-  });
+  useEffect(() => {
+    dispatch(changeShowedFilms(FILMS_PER_STEP));
+  }, [dispatch]);
 
   return (
     <>
@@ -49,7 +35,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <header className="page-header film-card__head">
           <Logo />
 
-          <UserBlock/>
+          <UserBlock />
         </header>
 
         <div className="film-card__wrap">
@@ -84,12 +70,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         </div>
       </section>
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresFilter />
-          <FilmsList films={films} />
-        </section>
-
+        <FilmsList films={films} showGenreFilter />
         <footer className="page-footer">
           <Logo isCenter />
 
@@ -102,5 +83,4 @@ function Main(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { Main };
-export default connector(Main);
+export default memo(Main);

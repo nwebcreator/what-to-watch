@@ -1,60 +1,53 @@
-import { ALL_GENRES_NAME, AuthorizationStatus, FILMS_PER_STEP } from '../const';
-import { Actions, ActionType } from '../types/action';
+import { createReducer } from '@reduxjs/toolkit';
+import { ALL_GENRES_NAME, AuthorizationStatus } from '../const';
 import { State } from '../types/state';
+import { changeGenre, changeShowedFilms, loadFavoriteFilms, loadFilm, loadFilms, loadReviews, loadSimilarFilms, requireAuthorization, requireLogout } from './action';
 
 const initialState: State = {
   activeGenre: ALL_GENRES_NAME,
-  sourcedFilms: [],
   films: [],
+  favoriteFilms: [],
   reviews: [],
   similarFilms: [],
   film: undefined,
-  showedFilms: FILMS_PER_STEP,
+  showedFilms: 0,
   authorizationStatus: AuthorizationStatus.Unknown,
   authInfo: undefined,
   isDataLoaded: false,
 };
 
-const reducer = (state: State = initialState, action: Actions): State => {
-  switch (action.type) {
-    case ActionType.ChangeGenre: {
-      const activeGenre = action.payload;
-      if (activeGenre === ALL_GENRES_NAME) {
-        return { ...state, activeGenre, films: [...state.sourcedFilms] };
-      }
-
-      return { ...state, activeGenre, films: [...state.sourcedFilms].filter(((it) => it.genre === activeGenre)) };
-    }
-    case ActionType.LoadFilms: {
-      const sourcedFilms = [...action.payload.films];
-      const films = [...sourcedFilms];
-      return { ...state, sourcedFilms, films, isDataLoaded: true };
-    }
-    case ActionType.LoadSimilarFilms: {
-      const similarFilms = [...action.payload.similarFilms];
-      return { ...state, similarFilms };
-    }
-    case ActionType.LoadReviews: {
-      const reviews = action.payload.reviews;
-      return { ...state, reviews };
-    }
-    case ActionType.LoadFilm: {
-      const { film } = action.paylod;
-      return { ...state, film };
-    }
-    case ActionType.RequireAuthorization: {
-      return { ...state, authorizationStatus: action.payload.authorizationStatus, authInfo: action.payload.authInfo };
-    }
-    case ActionType.RequireLogout: {
-      return { ...state, authorizationStatus: AuthorizationStatus.NoAuth, authInfo: undefined };
-    }
-    case ActionType.ChangeShowedFilms: {
-      const showedFilms = action.payload;
-      return { ...state, showedFilms };
-    }
-    default:
-      return state;
-  }
-};
+const reducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(changeGenre, (state, action) => {
+      state.activeGenre = action.payload;
+    })
+    .addCase(loadFilms, (state, action) => {
+      state.films = action.payload.films;
+      state.isDataLoaded = true;
+    })
+    .addCase(loadFavoriteFilms, (state, action) => {
+      state.favoriteFilms = action.payload.films;
+    })
+    .addCase(loadSimilarFilms, (state, action) => {
+      state.similarFilms = action.payload.similarFilms;
+    })
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload.reviews;
+    })
+    .addCase(loadFilm, (state, action) => {
+      state.film = action.payload.film;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload.authorizationStatus;
+      state.authInfo = action.payload.authInfo;
+    })
+    .addCase(requireLogout, (state) => {
+      state.authorizationStatus = AuthorizationStatus.NoAuth;
+      state.authInfo = undefined;
+    })
+    .addCase(changeShowedFilms, (state, acion) => {
+      state.showedFilms = acion.payload;
+    });
+});
 
 export { reducer };

@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadFilm, loadFilms, loadReviews, loadSimilarFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
+import { loadFavoriteFilms, loadFilm, loadFilms, loadReviews, loadSimilarFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
@@ -15,10 +15,16 @@ export const fetchFilmsAction = (): ThunkActionResult =>
     dispatch(loadFilms(data.map((it) => mapDataToFilm(it))));
   };
 
+export const fetchFavoriteFilmsAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<Record<string, unknown>[]>(APIRoute.FavoriteFilms);
+    dispatch(loadFavoriteFilms(data.map((it) => mapDataToFilm(it))));
+  };
+
 export const fethcSimilarFilmsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const { data } = await api.get<Record<string, unknown>[]>(APIRoute.SimilarFilms.replace('{id}', id.toString()));
-    dispatch(loadSimilarFilms(data.map((it) => mapDataToFilm(it))));
+    dispatch(loadSimilarFilms(data.map((it) => mapDataToFilm(it)).filter((it) => it.id !== id)));
   };
 
 export const fetchReviewsAction = (id: number): ThunkActionResult =>
@@ -35,7 +41,7 @@ export const fetchFilmAction = (id: number): ThunkActionResult =>
 
 export const addReviewAction = (id: number, review: AddReview): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.post<Reviews>(APIRoute.FilmReviews.replace('{id}', id.toString()), review);
+    const { data } = await api.post<Reviews>(APIRoute.FilmReviews.replace('{id}', id.toString()), review);
     dispatch(loadReviews(data));
   };
 

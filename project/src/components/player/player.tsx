@@ -1,13 +1,29 @@
-import { Film } from '../../types/film';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchFilmAction } from '../../store/api-actions';
+import { getFilm } from '../../store/data/selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type PlayerProps = {
-  film: Film
-}
+function Player(): JSX.Element {
+  const id = parseInt(useParams<{ id: string }>().id, 10);
+  const film = useSelector(getFilm);
 
-function Player({ film }: PlayerProps): JSX.Element {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFilmAction(id));
+  }, [dispatch, id]);
+
+  if (!film) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <div className="player">
-      <video src={film.videoLink} className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={film.videoLink} className="player__video" poster={film.previewImage}></video>
 
       <button type="button" className="player__exit">Exit</button>
 

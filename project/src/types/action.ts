@@ -1,11 +1,12 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import { State } from '../types/state';
-import { changeGenre, changeShowedFilms, loadFilms, loadSimilarFilms, loadFilm, redirectToRoute, requireAuthorization, requireLogout, loadReviews } from '../store/action';
+import { changeGenre, changeShowedFilms, loadFilms, loadSimilarFilms, loadFilm, redirectToRoute, requireAuthorization, requireLogout, loadReviews, loadFavoriteFilms } from '../store/action';
 
 export enum ActionType {
   ChangeGenre = 'wtw/changeGenre',
   LoadFilms = 'wtw/loadFilms',
+  LoadFavoriteFilms = 'wtw/loadFavoriteFilms',
   LoadReviews = 'wtw/loadReviews',
   LoadSimilarFilms = 'wtw/loadSimilarFilms',
   LoadFilm = 'wtw/loadFilm',
@@ -24,6 +25,7 @@ export type Actions =
   | ReturnType<typeof changeGenre>
   | ReturnType<typeof changeShowedFilms>
   | ReturnType<typeof loadFilms>
+  | ReturnType<typeof loadFavoriteFilms>
   | ReturnType<typeof loadReviews>
   | ReturnType<typeof loadSimilarFilms>
   | ReturnType<typeof loadFilm>

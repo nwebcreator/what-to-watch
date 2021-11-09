@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 type LogoProps = {
@@ -16,4 +17,4 @@ function Logo({ isCenter }: LogoProps): JSX.Element {
   );
 }
 
-export default Logo;
+export default memo(Logo);

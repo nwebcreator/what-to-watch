@@ -1,18 +1,17 @@
-import { MouseEventHandler } from 'react';
+import { memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Film } from '../../types/film';
 import VideoPlayer from '../video-player/video-player';
 
 type CardProps = {
   film: Film;
-  isActive?: boolean;
-  onMouseMove?: MouseEventHandler<HTMLElement> | undefined;
-  onMouseLeave?: MouseEventHandler<HTMLLegendElement> | undefined;
 }
 
-function Card({ film, isActive, onMouseMove, onMouseLeave }: CardProps): JSX.Element {
+function Card({ film }: CardProps): JSX.Element {
+  const [isActive, setIsActive] = useState(false);
+
   return (
-    <article className="small-film-card catalog__films-card" onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+    <article className="small-film-card catalog__films-card" onMouseMove={() => setIsActive(true)} onMouseLeave={() => setIsActive(false)}>
       <div className="small-film-card__image">
         {isActive ? <VideoPlayer src={film.previewVideoLink} poster={film.previewImage} muted autoPlay width="100%" height="auto"></VideoPlayer> :
           <img src={film.previewImage} alt={film.name} width="280" height="175" />}
@@ -24,4 +23,4 @@ function Card({ film, isActive, onMouseMove, onMouseLeave }: CardProps): JSX.Ele
   );
 }
 
-export default Card;
+export default memo(Card);

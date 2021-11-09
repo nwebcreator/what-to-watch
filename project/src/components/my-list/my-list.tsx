@@ -1,13 +1,23 @@
-import { Film } from '../../types/film';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FILMS_PER_STEP } from '../../const';
+import { changeShowedFilms } from '../../store/action';
+import { fetchFavoriteFilmsAction } from '../../store/api-actions';
+import { getMyFilms } from '../../store/data/selectors';
 import FilmsList from '../films-list/films-list';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 
-type MyListProps = {
-  films: Film[];
-}
 
-function MyList({films}: MyListProps): JSX.Element {
+function MyList(): JSX.Element {
+  const films = useSelector(getMyFilms);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(changeShowedFilms(FILMS_PER_STEP));
+    dispatch(fetchFavoriteFilmsAction());
+  }, [dispatch]);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -15,13 +25,10 @@ function MyList({films}: MyListProps): JSX.Element {
 
         <h1 className="page-title user-page__title">My list</h1>
 
-        <UserBlock/>
+        <UserBlock />
       </header>
 
-      <section className="catalog">
-        <h2 className="catalog__title visually-hidden">Catalog</h2>
-        <FilmsList films={films} />
-      </section>
+      <FilmsList films={films} />
 
       <footer className="page-footer">
         <Logo isCenter />
