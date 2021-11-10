@@ -8,11 +8,11 @@ import AddReview from '../add-review/add-review';
 import Player from '../player/player';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { isCheckedAuth } from '../../utils';
 import browserHistory from '../../browser-history';
+import { useSelector } from 'react-redux';
+import { getAuthorizationStatus, getLoadedDataStatus } from '../../store/data/selectors';
 
 type AppProps = {
   title: string,
@@ -20,19 +20,11 @@ type AppProps = {
   releaseYear: number,
 }
 
-const mapStateToProps = ({ authorizationStatus, isDataLoaded, films }: State) => ({
-  authorizationStatus,
-  isDataLoaded,
-  films,
-});
+function App(props: AppProps): JSX.Element {
+  const { title, genre, releaseYear } = props;
 
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & AppProps;
-
-function App(props: ConnectedComponentProps): JSX.Element {
-  const { title, genre, releaseYear, authorizationStatus, isDataLoaded, films } = props;
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const isDataLoaded = useSelector(getLoadedDataStatus);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
@@ -49,7 +41,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
         <Route exact path={AppRoute.Login}>
           <SignIn />
         </Route>
-        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList films={films} />}></PrivateRoute>
+        <PrivateRoute exact path={AppRoute.MyList} render={() => <MyList />}></PrivateRoute>
         <Route exact path={AppRoute.Film}>
           <MoviePage />
         </Route>
@@ -57,7 +49,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
           <AddReview />
         </Route>
         <Route exact path={AppRoute.Player}>
-          <Player film={films[2]} />
+          <Player />
         </Route>
         <Route exact path={AppRoute.NotFound}>
           <NotFound />
@@ -70,5 +62,4 @@ function App(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { App };
-export default connector(App);
+export default App;

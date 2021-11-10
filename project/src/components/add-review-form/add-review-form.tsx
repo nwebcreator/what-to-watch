@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { AddReview } from '../../types/add-review';
 
 type AddReviewFromProps = {
@@ -6,17 +6,18 @@ type AddReviewFromProps = {
 };
 
 export default function AddReviewForm({ onSubmit }: AddReviewFromProps): JSX.Element {
-  const [comment, setComment] = useState('');
+  const commentRef = useRef<HTMLTextAreaElement | null>(null);
   const [rating, setRating] = useState(5);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
-    if (rating !== undefined && comment) {
-      onSubmit({
-        rating: rating,
-        comment: comment,
-      });
+    if (commentRef.current !== null && commentRef.current.value) {
+      if (rating !== undefined) {
+        onSubmit({
+          rating: rating,
+          comment: commentRef.current.value,
+        });
+      }
     }
   };
 
@@ -35,7 +36,7 @@ export default function AddReviewForm({ onSubmit }: AddReviewFromProps): JSX.Ele
         </div>
 
         <div className="add-review__text">
-          <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={comment} onChange={(evt) => setComment(evt.target.value)}></textarea>
+          <textarea ref={commentRef} className="add-review__textarea" placeholder="Review text"></textarea>
           <div className="add-review__submit">
             <button className="add-review__btn" type="submit">Post</button>
           </div>

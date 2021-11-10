@@ -1,44 +1,44 @@
-import { Dispatch, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { FILMS_PER_STEP } from '../../const';
+import { memo, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ALL_GENRES_NAME, FILMS_PER_STEP } from '../../const';
 import { changeShowedFilms } from '../../store/action';
-import { Actions } from '../../types/action';
+import { getActiveGenre, getShowedFilms } from '../../store/data/selectors';
 import { Film } from '../../types/film';
-import { State } from '../../types/state';
 import Card from '../card/card';
+import GenresFilter from '../genres-filter/genres-filter';
 import ShowMoreButton from '../show-more-button/show-more-button';
 
 type FilmsListProps = {
+  className?: string,
   films: Film[],
+  title?: string,
+  showGenreFilter?: boolean
 }
 
-const mapStateToProps = ({ showedFilms }: State) => ({
-  showedFilms,
-});
+function FilmsList({ className, films, title, showGenreFilter }: FilmsListProps): JSX.Element {
+  const showedFilms = useSelector(getShowedFilms);
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onChangeShowedFilms(showedFilms: number) {
-    dispatch(changeShowedFilms(showedFilms));
-  },
-});
+  const activeGenre = useSelector(getActiveGenre);
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & FilmsListProps;
-
-function FilmsList({ films, showedFilms, onChangeShowedFilms }: ConnectedComponentProps): JSX.Element {
-  const [activeFilmId, setActiveFilmId] = useState<number | undefined>(undefined);
+  const filteredFilms = useMemo(() => {
+    if (activeGenre === ALL_GENRES_NAME) {
+      return films;
+    } else {
+      return films.filter((film) => film.genre === activeGenre);
+    }
+  }, [activeGenre, films]);
 
   return (
-    <>
+    <section className={className ? `catalog ${className}` : 'catalog'}>
+      {title ? <h2 className="catalog__title">{title}</h2> : <h2 className="catalog__title visually-hidden">Catalog</h2>}
+      {showGenreFilter && <GenresFilter />}
       <div className="catalog__films-list">
-        {films.slice(0, showedFilms).map((film) => <Card key={film.id} film={film} isActive={activeFilmId === film.id} onMouseMove={() => setActiveFilmId(film.id)} onMouseLeave={() => setActiveFilmId(undefined)} />)}
+        {filteredFilms.slice(0, showedFilms).map((film) => <Card key={film.id} film={film} />)}
       </div>
-      {(showedFilms < films.length) && <ShowMoreButton onClick={() => onChangeShowedFilms(showedFilms + FILMS_PER_STEP)}/>}
-    </>
+      {(showedFilms < filteredFilms.length) && <ShowMoreButton onClick={() => dispatch(changeShowedFilms(showedFilms + FILMS_PER_STEP))} />}
+    </section>
   );
 }
 
-export { FilmsList };
-export default connector(FilmsList);
+export default memo(FilmsList);

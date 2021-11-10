@@ -1,27 +1,13 @@
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-actions';
-import { ThunkAppDispatch } from '../../types/action';
-import { State } from '../../types/state';
+import { getAuthInfo, getAuthorizationStatus } from '../../store/data/selectors';
 
-const mapStateToProps = ({ authorizationStatus, authInfo }: State) => ({
-  authorizationStatus,
-  authInfo,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  logout() {
-    dispatch(logoutAction());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function UserBlock(props: PropsFromRedux): JSX.Element {
-  const { logout, authorizationStatus, authInfo } = props;
+function UserBlock(): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const authInfo = useSelector(getAuthInfo);
+  const dispatch = useDispatch();
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
@@ -35,7 +21,7 @@ function UserBlock(props: PropsFromRedux): JSX.Element {
           </div>
         </li>
         <li className="user-block__item">
-          <button className="user-block__link" style={{ border: 'none', background: 'none' }} onClick={() => logout()}>Sign out</button>
+          <button className="user-block__link" style={{ border: 'none', background: 'none' }} onClick={() => dispatch(logoutAction())}>Sign out</button>
         </li>
       </ul>
     );
@@ -48,5 +34,4 @@ function UserBlock(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export default connector(UserBlock);
-export { UserBlock };
+export default UserBlock;

@@ -4,55 +4,82 @@ import { ActionType } from '../types/action';
 import { Film, Films } from '../types/film';
 import { AuthInfo } from '../types/auth-info';
 import { Reviews } from '../types/review';
+import { createAction } from '@reduxjs/toolkit';
 
-export const changeGenre = (genre: string) => ({
-  type: ActionType.ChangeGenre,
-  payload: genre,
-} as const);
+export const changeGenre = createAction(
+  ActionType.ChangeGenre,
+  (genre: string) => ({
+    payload: genre,
+  }),
+);
 
-export const loadFilms = (films: Films) => ({
-  type: ActionType.LoadFilms,
-  payload: {
-    films,
-  },
-} as const);
+export const loadFilms = createAction(
+  ActionType.LoadFilms,
+  (films: Films) => ({
+    payload: {
+      films,
+    },
+  }),
+);
 
-export const loadReviews = (reviews: Reviews) => ({
-  type: ActionType.LoadReviews,
-  payload: {
-    reviews,
-  },
-} as const);
+export const loadFavoriteFilms = createAction(
+  ActionType.LoadFavoriteFilms,
+  (films: Films) => ({
+    payload: {
+      films,
+    },
+  }),
+);
 
-export const loadSimilarFilms = (similarFilms: Films) => ({
-  type: ActionType.LoadSimilarFilms,
-  payload: {
-    similarFilms,
-  },
-} as const);
+export const loadReviews = createAction(
+  ActionType.LoadReviews,
+  (reviews: Reviews) => ({
+    payload: {
+      reviews,
+    },
+  }),
+);
 
-export const loadFilm = (film: Film) => ({
-  type: ActionType.LoadFilm,
-  paylod: {
-    film,
-  },
-} as const);
+export const loadSimilarFilms = createAction(
+  ActionType.LoadSimilarFilms,
+  (similarFilms: Films) => ({
+    payload: {
+      similarFilms,
+    },
+  }),
+);
 
-export const changeShowedFilms = (showedFilms: number) => ({
-  type: ActionType.ChangeShowedFilms,
-  payload: showedFilms,
-} as const);
+export const loadFilm = createAction(
+  ActionType.LoadFilm,
+  (film: Film) => ({
+    payload: {
+      film,
+    },
+  }),
+);
 
-export const requireAuthorization = (authorizationStatus: AuthorizationStatus, authInfo?: AuthInfo) => ({
-  type: ActionType.RequireAuthorization,
-  payload: { authorizationStatus, authInfo },
-} as const);
+export const changeShowedFilms = createAction(
+  ActionType.ChangeShowedFilms,
+  (showedFilms: number) => ({
+    payload: showedFilms,
+  }),
+);
 
-export const requireLogout = () => ({
-  type: ActionType.RequireLogout,
-} as const);
+export const requireAuthorization = createAction(
+  ActionType.RequireAuthorization,
+  (authorizationStatus: AuthorizationStatus, authInfo?: AuthInfo) => ({
+    payload: {
+      authorizationStatus,
+      authInfo,
+    },
+  }),
+);
 
-export const redirectToRoute = (url: AppRoute | string) => ({
-  type: ActionType.RedirectToRoute,
-  payload: url,
-} as const);
+export const requireLogout = createAction(ActionType.RequireLogout);
+
+export const redirectToRoute = createAction(
+  ActionType.RedirectToRoute,
+  (url: AppRoute | string) => ({
+    payload: url,
+  }),
+);

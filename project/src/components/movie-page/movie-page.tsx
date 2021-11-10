@@ -1,54 +1,32 @@
 import { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, FILMS_PER_STEP } from '../../const';
+import { changeShowedFilms } from '../../store/action';
 import { fetchFilmAction, fetchReviewsAction, fethcSimilarFilmsAction } from '../../store/api-actions';
-import { ThunkAppDispatch } from '../../types/action';
-import { State } from '../../types/state';
+import { getAuthorizationStatus, getFilm, getReviews, getSimilarFilms } from '../../store/data/selectors';
 import FilmsList from '../films-list/films-list';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';
 import Tabs from '../tabs/tabs';
 import UserBlock from '../user-block/user-block';
 
-const mapStateToProps = ({ film, reviews, similarFilms, authorizationStatus }: State) => ({
-  film,
-  reviews,
-  similarFilms,
-  authorizationStatus,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchFilm(id: number) {
-    dispatch(fetchFilmAction(id));
-  },
-  fetchSimilarFilms(id: number) {
-    dispatch(fethcSimilarFilmsAction(id));
-  },
-  fetchReviews(id: number) {
-    dispatch(fetchReviewsAction(id));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function MoviePage({ film, similarFilms, reviews, authorizationStatus, fetchFilm, fetchSimilarFilms, fetchReviews }: ConnectedComponentProps): JSX.Element {
+function MoviePage(): JSX.Element {
   const id = parseInt(useParams<{ id: string }>().id, 10);
 
-  useEffect(() => {
-    fetchFilm(id);
-  }, [fetchFilm, id]);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const film = useSelector(getFilm);
+  const reviews = useSelector(getReviews);
+  const similarFilms = useSelector(getSimilarFilms);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchSimilarFilms(id);
-  }, [fetchSimilarFilms, id]);
-
-  useEffect(() => {
-    fetchReviews(id);
-  }, [fetchReviews, id]);
+    dispatch(changeShowedFilms(FILMS_PER_STEP));
+    dispatch(fetchFilmAction(id));
+    dispatch(fethcSimilarFilmsAction(id));
+    dispatch(fetchReviewsAction(id));
+  }, [dispatch, id]);
 
   if (!film) {
     return (
@@ -111,11 +89,7 @@ function MoviePage({ film, similarFilms, reviews, authorizationStatus, fetchFilm
     </section>
 
     <div className="page-content">
-      <section className="catalog catalog--like-this">
-        <h2 className="catalog__title">More like this</h2>
-
-        <FilmsList films={similarFilms.filter((it) => it.id !== id)} />
-      </section>
+      <FilmsList className="catalog--like-this" title="More like this" films={similarFilms} />
 
       <footer className="page-footer">
         <Logo isCenter />
@@ -128,5 +102,4 @@ function MoviePage({ film, similarFilms, reviews, authorizationStatus, fetchFilm
   );
 }
 
-export { MoviePage };
-export default connector(MoviePage);
+export default MoviePage;

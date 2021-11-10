@@ -1,42 +1,23 @@
 import { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 import { addReviewAction, fetchFilmAction } from '../../store/api-actions';
-import { ThunkAppDispatch } from '../../types/action';
-import { AddReview as AddReviewModel } from '../../types/add-review';
-import { State } from '../../types/state';
+import { getFilm } from '../../store/data/selectors';
 import AddReviewForm from '../add-review-form/add-review-form';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 
-const mapStateToProps = ({ film }: State) => ({
-  film,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchFilm(id: number) {
-    dispatch(fetchFilmAction(id));
-  },
-  addReview(id: number, review: AddReviewModel) {
-    dispatch(addReviewAction(id, review));
-    dispatch(redirectToRoute(`${AppRoute.Film}#reviews`.replace(':id', id.toString())));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function AddReview({ film, fetchFilm, addReview }: ConnectedComponentProps): JSX.Element {
+function AddReview(): JSX.Element {
   const id = parseInt(useParams<{ id: string }>().id, 10);
+  const film = useSelector(getFilm);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchFilm(id);
-  }, [fetchFilm, id]);
+    dispatch(fetchFilmAction(id));
+  }, [dispatch, id]);
 
   if (!film) {
     return (
@@ -59,10 +40,10 @@ function AddReview({ film, fetchFilm, addReview }: ConnectedComponentProps): JSX
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">{film.name}</a>
+                <Link className="breadcrumbs__link" to={AppRoute.Film.replace(':id', id.toString())}>{film.name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="/#">Add review</a>
+                <span className="breadcrumbs__link">Add review</span>
               </li>
             </ul>
           </nav>
@@ -75,11 +56,14 @@ function AddReview({ film, fetchFilm, addReview }: ConnectedComponentProps): JSX
         </div>
       </div>
 
-      <AddReviewForm onSubmit={(review) => addReview(id, review)} />
+      <AddReviewForm onSubmit={(review) => {
+        dispatch(addReviewAction(id, review));
+        dispatch(redirectToRoute(`${AppRoute.Film}#reviews`.replace(':id', id.toString())));
+      }}
+      />
 
     </section>
   );
 }
 
-export { AddReview };
-export default connector(AddReview);
+export default AddReview;
