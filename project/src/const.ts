@@ -11,8 +11,10 @@ export const ALL_GENRES_NAME = 'All genres';
 export enum APIRoute {
   Films = '/films',
   FavoriteFilms = '/favorite',
+  FavoriteStatus = '/favorite/{id}/{status}',
   SimilarFilms = '/films/{id}/similar',
   FilmReviews = '/comments/{id}',
   Login = '/login',
   Logout = '/logout',
+  Promo = '/promo'
 }

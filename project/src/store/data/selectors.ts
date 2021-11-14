@@ -6,6 +6,7 @@ import { State } from '../../types/state';
 
 export const getAuthorizationStatus = (state: State): AuthorizationStatus => state.authorizationStatus;
 export const getFilm = (state: State): Film | undefined => state.film;
+export const getPromofilm = (state: State): Film => state.promoFilm || {} as Film;
 export const getFilms = (state: State): Films => state.films;
 export const getMyFilms = (state: State): Films => state.favoriteFilms;
 export const getReviews = (state: State): Reviews => state.reviews;

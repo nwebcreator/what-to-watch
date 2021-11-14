@@ -1,6 +1,6 @@
 import { AuthorizationStatus } from '../const';
 import { Film, Films } from './film';
-import { AuthInfo  } from './auth-info';
+import { AuthInfo } from './auth-info';
 import { Reviews } from './review';
 
 export type State = {
@@ -8,6 +8,7 @@ export type State = {
   films: Films,
   favoriteFilms: Films,
   film?: Film,
+  promoFilm?: Film,
   reviews: Reviews,
   similarFilms: Films,
   showedFilms: number,

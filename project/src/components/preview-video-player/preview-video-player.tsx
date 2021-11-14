@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-type VideoPlayerProps = {
+type PreviewVideoPlayerProps = {
   src: string;
   poster?: string;
   autoPlay?: boolean;
@@ -9,7 +9,7 @@ type VideoPlayerProps = {
   height?: string | number;
 };
 
-export default function VideoPlayer({ src, poster, autoPlay, muted, width, height }: VideoPlayerProps): JSX.Element {
+function PreviewVideoPlayer({ src, poster, autoPlay, muted, width, height }: PreviewVideoPlayerProps): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -42,3 +42,5 @@ export default function VideoPlayer({ src, poster, autoPlay, muted, width, heigh
     </video>
   );
 }
+
+export default PreviewVideoPlayer;

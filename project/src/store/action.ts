@@ -31,6 +31,16 @@ export const loadFavoriteFilms = createAction(
   }),
 );
 
+export const updateFilmFavoriteStatus = createAction(
+  ActionType.UpdateFilmFavoriteStatus,
+  (id: number, isFavorite: boolean) => ({
+    payload: {
+      id,
+      isFavorite,
+    },
+  }),
+);
+
 export const loadReviews = createAction(
   ActionType.LoadReviews,
   (reviews: Reviews) => ({
@@ -45,6 +55,15 @@ export const loadSimilarFilms = createAction(
   (similarFilms: Films) => ({
     payload: {
       similarFilms,
+    },
+  }),
+);
+
+export const loadPromoFilm = createAction(
+  ActionType.LoadPromoFilm,
+  (promoFilm: Film) => ({
+    payload: {
+      promoFilm,
     },
   }),
 );
