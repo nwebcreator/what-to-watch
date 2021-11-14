@@ -53,8 +53,6 @@ function PlayerPage(): JSX.Element {
           <div className="player__time" onClick={(evt) => {
             const offsetX = evt.clientX - evt.currentTarget.offsetLeft;
             const totalWidth = evt.currentTarget.clientWidth;
-            // eslint-disable-next-line no-console
-            console.log(evt);
             const change = Math.floor(offsetX / totalWidth * 100);
             handleVideoProgress(change);
           }}
