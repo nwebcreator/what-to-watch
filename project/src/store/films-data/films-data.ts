@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { ALL_GENRES_NAME, AuthorizationStatus } from '../const';
-import { State } from '../types/state';
-import { changeGenre, changeShowedFilms, loadFavoriteFilms, loadFilm, loadFilms, loadPromoFilm, loadReviews, loadSimilarFilms, requireAuthorization, requireLogout, updateFilmFavoriteStatus } from './action';
+import { ALL_GENRES_NAME } from '../../const';
+import { FilmsData } from '../../types/state';
+import { changeGenre, changeShowedFilms, loadFavoriteFilms, loadFilm, loadFilms, loadPromoFilm, loadReviews, loadSimilarFilms, updateFilmFavoriteStatus } from '../action';
 
-const initialState: State = {
+const initialState: FilmsData = {
   activeGenre: ALL_GENRES_NAME,
   films: [],
   favoriteFilms: [],
@@ -12,12 +12,10 @@ const initialState: State = {
   film: undefined,
   promoFilm: undefined,
   showedFilms: 0,
-  authorizationStatus: AuthorizationStatus.Unknown,
-  authInfo: undefined,
   isDataLoaded: false,
 };
 
-const reducer = createReducer(initialState, (builder) => {
+const filmsData = createReducer(initialState, (builder) => {
   builder
     .addCase(changeGenre, (state, action) => {
       state.activeGenre = action.payload;
@@ -27,7 +25,10 @@ const reducer = createReducer(initialState, (builder) => {
       state.isDataLoaded = true;
     })
     .addCase(loadFavoriteFilms, (state, action) => {
-      state.favoriteFilms = action.payload.films;
+      state.favoriteFilms = action.payload.favoriteFilms;
+    })
+    .addCase(loadFilm, (state, action) => {
+      state.film = action.payload.film;
     })
     .addCase(updateFilmFavoriteStatus, (state, action) => {
       if (state.film?.id === action.payload.id) {
@@ -44,23 +45,12 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadReviews, (state, action) => {
       state.reviews = action.payload.reviews;
     })
-    .addCase(loadFilm, (state, action) => {
-      state.film = action.payload.film;
-    })
     .addCase(loadPromoFilm, (state, action) => {
       state.promoFilm = action.payload.promoFilm;
-    })
-    .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload.authorizationStatus;
-      state.authInfo = action.payload.authInfo;
-    })
-    .addCase(requireLogout, (state) => {
-      state.authorizationStatus = AuthorizationStatus.NoAuth;
-      state.authInfo = undefined;
     })
     .addCase(changeShowedFilms, (state, action) => {
       state.showedFilms = action.payload;
     });
 });
 
-export { reducer };
+export { filmsData };

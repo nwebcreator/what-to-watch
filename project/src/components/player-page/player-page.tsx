@@ -5,7 +5,7 @@ import useVideoPlayer from '../../hooks/use-video-player';
 import { AppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 import { fetchFilmAction } from '../../store/api-actions';
-import { getFilm } from '../../store/data/selectors';
+import { getFilm } from '../../store/films-data/selectors';
 import { formatDuration } from '../../utils';
 import LoadingScreen from '../loading-screen/loading-screen';
 

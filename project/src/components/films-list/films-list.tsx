@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ALL_GENRES_NAME, FILMS_PER_STEP } from '../../const';
 import { changeShowedFilms } from '../../store/action';
-import { getActiveGenre, getShowedFilms } from '../../store/data/selectors';
+import { getActiveGenre, getShowedFilms } from '../../store/films-data/selectors';
 import { Film } from '../../types/film';
 import Card from '../card/card';
 import GenresFilter from '../genres-filter/genres-filter';

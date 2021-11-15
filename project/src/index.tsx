@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Router as BrowserRouter } from 'react-router-dom';
 import App from './components/app/app';
-import { reducer } from './store/reducer';
 import { createAPI } from './services/api';
 import { redirectToRoute, requireAuthorization } from './store/action';
 import { AuthorizationStatus } from './const';
@@ -10,6 +10,8 @@ import { checkAuthAction, fetchFilmsAction, fetchPromoAction } from './store/api
 import { redirect } from './store/middlewares/redirect';
 import { AppRoute } from './routes';
 import { configureStore } from '@reduxjs/toolkit';
+import { rootReducer } from './store/root-reducer';
+import browserHistory from './browser-history';
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
@@ -17,7 +19,7 @@ const api = createAPI(
 );
 
 const store = configureStore({
-  reducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
@@ -33,7 +35,9 @@ store.dispatch(fetchPromoAction());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter history={browserHistory}>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { RouteProps } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { AppRoute } from '../../routes';
-import { getAuthorizationStatus } from '../../store/data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type RenderFuncProps = {
   history: History<unknown>;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FILMS_PER_STEP } from '../../const';
 import { changeShowedFilms } from '../../store/action';
 import { fetchFavoriteFilmsAction } from '../../store/api-actions';
-import { getMyFilms } from '../../store/data/selectors';
+import { getMyFilms } from '../../store/films-data/selectors';
 import FilmsList from '../films-list/films-list';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';

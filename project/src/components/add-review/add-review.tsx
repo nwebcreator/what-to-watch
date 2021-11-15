@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 import { addReviewAction, fetchFilmAction } from '../../store/api-actions';
-import { getFilm } from '../../store/data/selectors';
+import { getFilm } from '../../store/films-data/selectors';
 import AddReviewForm from '../add-review-form/add-review-form';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';

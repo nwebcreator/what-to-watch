@@ -24,9 +24,9 @@ export const loadFilms = createAction(
 
 export const loadFavoriteFilms = createAction(
   ActionType.LoadFavoriteFilms,
-  (films: Films) => ({
+  (favoriteFilms: Films) => ({
     payload: {
-      films,
+      favoriteFilms,
     },
   }),
 );

@@ -1,9 +1,10 @@
 import { AuthorizationStatus } from '../const';
-import { Film, Films } from './film';
+import { RootState } from '../store/root-reducer';
 import { AuthInfo } from './auth-info';
+import { Film, Films } from './film';
 import { Reviews } from './review';
 
-export type State = {
+export type FilmsData = {
   activeGenre: string,
   films: Films,
   favoriteFilms: Films,
@@ -12,7 +13,12 @@ export type State = {
   reviews: Reviews,
   similarFilms: Films,
   showedFilms: number,
-  authorizationStatus: AuthorizationStatus,
-  authInfo?: AuthInfo,
   isDataLoaded: boolean,
 };
+
+export type UserProcess = {
+  authorizationStatus: AuthorizationStatus,
+  authInfo?: AuthInfo,
+};
+
+export type State = RootState;
