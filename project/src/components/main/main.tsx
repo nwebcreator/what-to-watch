@@ -3,19 +3,14 @@ import { memo, useEffect } from 'react';
 import UserBlock from '../user-block/user-block';
 import FilmsList from '../films-list/films-list';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilms } from '../../store/data/selectors';
+import { getFilms, getPromofilm } from '../../store/data/selectors';
 import { changeShowedFilms } from '../../store/action';
 import { FILMS_PER_STEP } from '../../const';
+import MyListButton from '../my-list-button/my-list-button';
+import ToPlayerButton from '../to-player-button/to-player-button';
 
-type MainProps = {
-  title: string,
-  genre: string,
-  releaseYear: number
-}
-
-function Main(props: MainProps): JSX.Element {
-  const { title, genre, releaseYear } = props;
-
+function Main(): JSX.Element {
+  const promoFilm = useSelector(getPromofilm);
   const films = useSelector(getFilms);
   const dispatch = useDispatch();
 
@@ -27,7 +22,7 @@ function Main(props: MainProps): JSX.Element {
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -41,29 +36,19 @@ function Main(props: MainProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={promoFilm.posterImage} alt={`${promoFilm.name} poster`} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{releaseYear}</span>
+                <span className="film-card__genre">{promoFilm.genre}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                <ToPlayerButton filmId={promoFilm.id}/>
+                <MyListButton film={promoFilm} />
               </div>
             </div>
           </div>

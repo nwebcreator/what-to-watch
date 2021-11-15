@@ -1,5 +1,5 @@
 import { ThunkActionResult } from '../types/action';
-import { loadFavoriteFilms, loadFilm, loadFilms, loadReviews, loadSimilarFilms, redirectToRoute, requireAuthorization, requireLogout } from './action';
+import { loadFavoriteFilms, loadFilm, loadFilms, loadPromoFilm, loadReviews, loadSimilarFilms, redirectToRoute, requireAuthorization, requireLogout, updateFilmFavoriteStatus } from './action';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { AuthData } from '../types/auth-data';
@@ -8,6 +8,12 @@ import { mapDataToFilm } from '../mappers/film-mapper';
 import { mapDataToAuthInfo } from '../mappers/auth-info-mapper';
 import { Reviews } from '../types/review';
 import { AddReview } from '../types/add-review';
+
+export const fetchPromoAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.get<Record<string, unknown>>(APIRoute.Promo);
+    dispatch(loadPromoFilm(mapDataToFilm(data)));
+  };
 
 export const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -45,6 +51,13 @@ export const addReviewAction = (id: number, review: AddReview): ThunkActionResul
     dispatch(loadReviews(data));
   };
 
+export const changeFilmFavoriteStatus = (id: number, isFavorite: boolean): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const { data } = await api.post<Record<string, unknown>>(APIRoute.FavoriteStatus.replace('{id}', id.toString()).replace('{status}', isFavorite ? '1' : '0'));
+    const film = mapDataToFilm(data);
+    dispatch(updateFilmFavoriteStatus(film.id, film.isFavorite));
+  };
+
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const { data } = await api.get<Record<string, unknown>>(APIRoute.Login);
@@ -64,7 +77,6 @@ export const loginAction = ({ login: email, password }: AuthData): ThunkActionRe
 
     dispatch(redirectToRoute(AppRoute.Root));
   };
-
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {

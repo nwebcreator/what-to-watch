@@ -5,7 +5,7 @@ import SignIn from '../sign-in/sign-in';
 import MyList from '../my-list/my-list';
 import MoviePage from '../movie-page/movie-page';
 import AddReview from '../add-review/add-review';
-import Player from '../player/player';
+import PlayerPage from '../player-page/player-page';
 import NotFound from '../not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -14,15 +14,7 @@ import browserHistory from '../../browser-history';
 import { useSelector } from 'react-redux';
 import { getAuthorizationStatus, getLoadedDataStatus } from '../../store/data/selectors';
 
-type AppProps = {
-  title: string,
-  genre: string,
-  releaseYear: number,
-}
-
-function App(props: AppProps): JSX.Element {
-  const { title, genre, releaseYear } = props;
-
+function App(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const isDataLoaded = useSelector(getLoadedDataStatus);
 
@@ -36,7 +28,7 @@ function App(props: AppProps): JSX.Element {
     <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Root}>
-          <Main title={title} genre={genre} releaseYear={releaseYear} />
+          <Main />
         </Route>
         <Route exact path={AppRoute.Login}>
           <SignIn />
@@ -49,7 +41,7 @@ function App(props: AppProps): JSX.Element {
           <AddReview />
         </Route>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <PlayerPage />
         </Route>
         <Route exact path={AppRoute.NotFound}>
           <NotFound />

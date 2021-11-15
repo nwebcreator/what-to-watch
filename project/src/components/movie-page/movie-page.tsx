@@ -8,7 +8,9 @@ import { getAuthorizationStatus, getFilm, getReviews, getSimilarFilms } from '..
 import FilmsList from '../films-list/films-list';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Logo from '../logo/logo';
+import MyListButton from '../my-list-button/my-list-button';
 import Tabs from '../tabs/tabs';
+import ToPlayerButton from '../to-player-button/to-player-button';
 import UserBlock from '../user-block/user-block';
 
 function MoviePage(): JSX.Element {
@@ -58,19 +60,8 @@ function MoviePage(): JSX.Element {
             </p>
 
             <div className="film-card__buttons">
-              <button className="btn btn--play film-card__button" type="button">
-                <svg viewBox="0 0 19 19" width="19" height="19">
-                  <use xlinkHref="#play-s"></use>
-                </svg>
-                <span>Play</span>
-              </button>
-              {authorizationStatus === AuthorizationStatus.Auth &&
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>}
+              <ToPlayerButton filmId={film.id}/>
+              <MyListButton film={film} />
 
               {authorizationStatus === AuthorizationStatus.Auth && <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>}
             </div>

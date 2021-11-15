@@ -9,6 +9,14 @@ const getHoursAndMinutes = (duration: number) => {
   return { hours, minutes };
 };
 
+export const formatDuration = (duration: number): string => {
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const seconds = Math.floor(duration % 60);
+
+  return hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+};
+
 export const getFormatedDuration = (duration: number): string => {
   const { hours, minutes } = getHoursAndMinutes(duration);
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
