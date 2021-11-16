@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthorizationStatus } from '../../const';
 import { changeFilmFavoriteStatus } from '../../store/api-actions';
-import { getAuthorizationStatus } from '../../store/data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { Film } from '../../types/film';
 
 type MyListButtonProps = {

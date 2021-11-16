@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { FILMS_PER_STEP } from '../../const';
 import { changeGenre, changeShowedFilms } from '../../store/action';
-import { getActiveGenre, getGenres } from '../../store/data/selectors';
+import { getActiveGenre, getGenres } from '../../store/films-data/selectors';
 
 function GenresFilter(): JSX.Element {
   const genres = useSelector(getGenres);

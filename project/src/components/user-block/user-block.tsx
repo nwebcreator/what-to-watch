@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthorizationStatus } from '../../const';
 import { AppRoute } from '../../routes';
 import { logoutAction } from '../../store/api-actions';
-import { getAuthInfo, getAuthorizationStatus } from '../../store/data/selectors';
+import { getAuthInfo, getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function UserBlock(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);

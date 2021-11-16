@@ -3,7 +3,7 @@ import { memo, useEffect } from 'react';
 import UserBlock from '../user-block/user-block';
 import FilmsList from '../films-list/films-list';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilms, getPromofilm } from '../../store/data/selectors';
+import { getFilms, getPromofilm } from '../../store/films-data/selectors';
 import { changeShowedFilms } from '../../store/action';
 import { FILMS_PER_STEP } from '../../const';
 import MyListButton from '../my-list-button/my-list-button';
