@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: TabDetails should render correctly 1`] = `
+<div>
+  <div
+    class="film-card__text film-card__row"
+  >
+    <div
+      class="film-card__text-col"
+    >
+      <p
+        class="film-card__details-item"
+      >
+        <strong
+          class="film-card__details-name"
+        >
+          Director
+        </strong>
+        <span
+          class="film-card__details-value"
+        >
+          string
+        </span>
+      </p>
+      <p
+        class="film-card__details-item"
+      >
+        <strong
+          class="film-card__details-name"
+        >
+          Starring
+        </strong>
+        <span
+          class="film-card__details-value"
+        >
+          <span>
+            
+             
+          </span>
+        </span>
+      </p>
+    </div>
+    <div
+      class="film-card__text-col"
+    >
+      <p
+        class="film-card__details-item"
+      >
+        <strong
+          class="film-card__details-name"
+        >
+          Run Time
+        </strong>
+        <span
+          class="film-card__details-value"
+        >
+          10m
+        </span>
+      </p>
+      <p
+        class="film-card__details-item"
+      >
+        <strong
+          class="film-card__details-name"
+        >
+          Genre
+        </strong>
+        <span
+          class="film-card__details-value"
+        >
+          string
+        </span>
+      </p>
+      <p
+        class="film-card__details-item"
+      >
+        <strong
+          class="film-card__details-name"
+        >
+          Released
+        </strong>
+        <span
+          class="film-card__details-value"
+        >
+          2010
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+`;

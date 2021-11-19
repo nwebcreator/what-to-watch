@@ -11,14 +11,12 @@ import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { isCheckedAuth } from '../../utils';
 import { useSelector } from 'react-redux';
-import { getLoadedDataStatus } from '../../store/films-data/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
-  const isDataLoaded = useSelector(getLoadedDataStatus);
 
-  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+  if (isCheckedAuth(authorizationStatus)) {
     return (
       <LoadingScreen />
     );
