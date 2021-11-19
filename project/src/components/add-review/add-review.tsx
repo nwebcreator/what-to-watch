@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../routes';
-import { redirectToRoute } from '../../store/action';
 import { addReviewAction, fetchFilmAction } from '../../store/api-actions';
 import { getFilm } from '../../store/films-data/selectors';
 import AddReviewForm from '../add-review-form/add-review-form';
@@ -58,7 +57,6 @@ function AddReview(): JSX.Element {
 
       <AddReviewForm onSubmit={(review) => {
         dispatch(addReviewAction(id, review));
-        dispatch(redirectToRoute(`${AppRoute.Film}#reviews`.replace(':id', id.toString())));
       }}
       />
 

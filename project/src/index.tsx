@@ -6,8 +6,10 @@ import App from './components/app/app';
 import { createAPI } from './services/api';
 import { redirectToRoute, requireAuthorization } from './store/action';
 import { AuthorizationStatus } from './const';
-import { checkAuthAction, fetchFilmsAction, fetchPromoAction } from './store/api-actions';
+import { checkAuthAction } from './store/api-actions';
 import { redirect } from './store/middlewares/redirect';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AppRoute } from './routes';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './store/root-reducer';
@@ -29,13 +31,12 @@ const store = configureStore({
 });
 
 store.dispatch(checkAuthAction());
-store.dispatch(fetchFilmsAction());
-store.dispatch(fetchPromoAction());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter history={browserHistory}>
+        <ToastContainer />
         <App />
       </BrowserRouter>
     </Provider>

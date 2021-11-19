@@ -24,9 +24,8 @@ function FilmsList({ className, films, title, showGenreFilter }: FilmsListProps)
   const filteredFilms = useMemo(() => {
     if (activeGenre === ALL_GENRES_NAME) {
       return films;
-    } else {
-      return films.filter((film) => film.genre === activeGenre);
     }
+    return films.filter((film) => film.genre === activeGenre);
   }, [activeGenre, films]);
 
   return (

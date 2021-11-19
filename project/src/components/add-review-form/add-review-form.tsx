@@ -1,23 +1,26 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { AddReview } from '../../types/add-review';
+
+const MIN_COMMENT_LENGTH = 50;
+const MAX_COMMENT_LENGTH = 400;
 
 type AddReviewFromProps = {
   onSubmit: (review: AddReview) => void,
 };
 
 export default function AddReviewForm({ onSubmit }: AddReviewFromProps): JSX.Element {
-  const commentRef = useRef<HTMLTextAreaElement | null>(null);
   const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+
+  const isFormValid = useMemo(() => rating > 0 && comment.length >= MIN_COMMENT_LENGTH && comment.length <= MAX_COMMENT_LENGTH, [rating, comment]);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (commentRef.current !== null && commentRef.current.value) {
-      if (rating !== undefined) {
-        onSubmit({
-          rating: rating,
-          comment: commentRef.current.value,
-        });
-      }
+    if (isFormValid) {
+      onSubmit({
+        rating,
+        comment,
+      });
     }
   };
 
@@ -36,9 +39,9 @@ export default function AddReviewForm({ onSubmit }: AddReviewFromProps): JSX.Ele
         </div>
 
         <div className="add-review__text">
-          <textarea ref={commentRef} className="add-review__textarea" placeholder="Review text"></textarea>
+          <textarea className="add-review__textarea" placeholder="Review text" maxLength={MAX_COMMENT_LENGTH} defaultValue={comment} onChange={(evt) => setComment(evt.target.value)}></textarea>
           <div className="add-review__submit">
-            <button className="add-review__btn" type="submit">Post</button>
+            <button className="add-review__btn" type="submit" disabled={!isFormValid}>Post</button>
           </div>
         </div>
       </form>

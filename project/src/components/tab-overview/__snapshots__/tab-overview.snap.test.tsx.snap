@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: TabOverview should render correctly 1`] = `
+<div>
+  <div
+    class="film-rating"
+  >
+    <div
+      class="film-rating__score"
+    >
+      10
+    </div>
+    <p
+      class="film-rating__meta"
+    >
+      <span
+        class="film-rating__level"
+      >
+        Awesome
+      </span>
+      <span
+        class="film-rating__count"
+      >
+        10
+         ratings
+      </span>
+    </p>
+  </div>
+  <div
+    class="film-card__text"
+  >
+    <p>
+      string
+    </p>
+    <p
+      class="film-card__director"
+    >
+      <strong>
+        Director: 
+        string
+      </strong>
+    </p>
+    <p
+      class="film-card__starring"
+    >
+      <strong>
+        Starring: 
+        
+      </strong>
+    </p>
+  </div>
+</div>
+`;
