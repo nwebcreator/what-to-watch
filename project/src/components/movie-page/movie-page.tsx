@@ -25,10 +25,15 @@ function MoviePage(): JSX.Element {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (id && id !== film?.id) {
+      dispatch(fetchFilmAction(id));
+      dispatch(fethcSimilarFilmsAction(id));
+      dispatch(fetchReviewsAction(id));
+    }
+  }, [dispatch, id, film?.id]);
+
+  useEffect(() => {
     dispatch(changeShowedFilms(FILMS_PER_STEP));
-    dispatch(fetchFilmAction(id));
-    dispatch(fethcSimilarFilmsAction(id));
-    dispatch(fetchReviewsAction(id));
   }, [dispatch, id]);
 
   if (!film) {
@@ -61,7 +66,7 @@ function MoviePage(): JSX.Element {
             </p>
 
             <div className="film-card__buttons">
-              <ToPlayerButton filmId={film.id}/>
+              <ToPlayerButton filmId={film.id} />
               <MyListButton film={film} />
 
               {authorizationStatus === AuthorizationStatus.Auth && <Link to={`/films/${id}/review`} className="btn film-card__button">Add review</Link>}

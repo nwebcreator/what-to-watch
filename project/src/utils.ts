@@ -9,12 +9,19 @@ const getHoursAndMinutes = (duration: number) => {
   return { hours, minutes };
 };
 
+const addLeadingZero = (val: number) => String(val).padStart(2, '0');
+
 export const formatDuration = (duration: number): string => {
   const hours = Math.floor(duration / 3600);
   const minutes = Math.floor((duration % 3600) / 60);
   const seconds = Math.floor(duration % 60);
+  if (hours === 0 && minutes === 0 && seconds === 0) {
+    return '00:00';
+  }
 
-  return hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+  return hours > 0
+    ? `-${addLeadingZero(hours)}:${addLeadingZero(minutes)}:${addLeadingZero(seconds)}`
+    : `-${addLeadingZero(minutes)}:${addLeadingZero(seconds)}`;
 };
 
 export const getFormatedDuration = (duration: number): string => {

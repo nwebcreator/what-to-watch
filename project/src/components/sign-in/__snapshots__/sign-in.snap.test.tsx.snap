@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: SignIn should render correctly 1`] = `
+<div>
+  <div
+    class="user-page"
+  >
+    <header
+      class="page-header user-page__head"
+    >
+      <div
+        class="logo"
+      >
+        <a
+          class="logo__link"
+          href="/"
+        >
+          <span
+            class="logo__letter logo__letter--1"
+          >
+            W
+          </span>
+          <span
+            class="logo__letter logo__letter--2"
+          >
+            T
+          </span>
+          <span
+            class="logo__letter logo__letter--3"
+          >
+            W
+          </span>
+        </a>
+      </div>
+      <h1
+        class="page-title user-page__title"
+      >
+        Sign in
+      </h1>
+    </header>
+    <div
+      class="sign-in user-page__content"
+    >
+      <form
+        action="#"
+        class="sign-in__form"
+      >
+        <div
+          class="sign-in__message"
+        >
+          <p>
+            Please enter a valid email address
+          </p>
+        </div>
+        <div
+          class="sign-in__message"
+        >
+          <p>
+            Please enter a valid password
+          </p>
+        </div>
+        <div
+          class="sign-in__fields"
+        >
+          <div
+            class="sign-in__field sign-in__field--error"
+          >
+            <input
+              class="sign-in__input"
+              id="user-email"
+              name="user-email"
+              placeholder="Email address"
+              type="email"
+              value=""
+            />
+            <label
+              class="sign-in__label visually-hidden"
+              for="user-email"
+            >
+              Email address
+            </label>
+          </div>
+          <div
+            class="sign-in__field sign-in__field--error"
+          >
+            <input
+              class="sign-in__input"
+              id="user-password"
+              name="user-password"
+              placeholder="Password"
+              type="password"
+              value=""
+            />
+            <label
+              class="sign-in__label visually-hidden"
+              for="user-password"
+            >
+              Password
+            </label>
+          </div>
+        </div>
+        <div
+          class="sign-in__submit"
+        >
+          <button
+            class="sign-in__btn"
+            type="submit"
+          >
+            Sign in
+          </button>
+        </div>
+      </form>
+    </div>
+    <footer
+      class="page-footer"
+    >
+      <div
+        class="logo"
+      >
+        <a
+          class="logo__link logo__link--light"
+          href="/"
+        >
+          <span
+            class="logo__letter logo__letter--1"
+          >
+            W
+          </span>
+          <span
+            class="logo__letter logo__letter--2"
+          >
+            T
+          </span>
+          <span
+            class="logo__letter logo__letter--3"
+          >
+            W
+          </span>
+        </a>
+      </div>
+      <div
+        class="copyright"
+      >
+        <p>
+          © 2019 What to watch Ltd.
+        </p>
+      </div>
+    </footer>
+  </div>
+</div>
+`;

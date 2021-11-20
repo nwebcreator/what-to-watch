@@ -1,4 +1,4 @@
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { ThunkAction } from 'redux-thunk';
 import { AxiosInstance } from 'axios';
 import { State } from '../types/state';
 import { changeGenre, changeShowedFilms, loadFilms, loadSimilarFilms, loadFilm, redirectToRoute, requireAuthorization, requireLogout, loadReviews, loadFavoriteFilms, loadPromoFilm, updateFilmFavoriteStatus } from '../store/action';
@@ -15,7 +15,7 @@ export enum ActionType {
   ChangeShowedFilms = 'wtw/changeShowedFilms',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
-  RedirectToRoute = 'wtw/redirectToRoute',
+  RedirectToRoute = 'main/redirectToRoute',
 }
 
 export type Actions =
@@ -33,5 +33,3 @@ export type Actions =
   | ReturnType<typeof loadPromoFilm>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
-
-export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;

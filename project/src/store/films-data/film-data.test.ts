@@ -52,7 +52,7 @@ describe('Reducer: data', () => {
     const state = initialState;
 
     expect(filmsData(state, loadFavoriteFilms))
-      .toEqual({ ...state, ...{ favoriteFilms: loadFavoriteFilms.payload.favoriteFilms } });
+      .toEqual({ ...state, ...{ favoriteFilms: loadFavoriteFilms.payload.favoriteFilms, isDataLoaded: true } });
   });
 
   it('should update promoFilm', () => {

@@ -1,10 +1,11 @@
-import {Router, Route} from 'react-router-dom';
-import {createMemoryHistory} from 'history';
-import {render, screen} from '@testing-library/react';
-import {Provider} from 'react-redux';
-import {configureMockStore} from '@jedmao/redux-mock-store';
-import {AuthorizationStatus} from '../../const';
+import { Router, Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { AuthorizationStatus } from '../../const';
 import PrivateRoute from './private-route';
+import { NameSpace } from '../../store/root-reducer';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -16,7 +17,7 @@ describe('Component: PrivateRouter', () => {
 
   it('should render component for public route, when user not authorized', () => {
     const store = mockStore({
-      USER: {authorizationStatus: AuthorizationStatus.NoAuth},
+      [NameSpace.User]: { authorizationStatus: AuthorizationStatus.NoAuth },
     });
 
     render(
@@ -38,7 +39,7 @@ describe('Component: PrivateRouter', () => {
 
   it('should render component for private route, when user authorized', () => {
     const store = mockStore({
-      USER: {authorizationStatus: AuthorizationStatus.Auth},
+      [NameSpace.User]: { authorizationStatus: AuthorizationStatus.Auth },
     });
 
     render(

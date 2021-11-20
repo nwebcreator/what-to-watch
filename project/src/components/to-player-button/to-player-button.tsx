@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppRoute } from '../../routes';
+import { AppRoute, CreateAppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 
 type ToPlayerButtonProps = {
@@ -11,7 +11,7 @@ function ToPlayerButton({ filmId }: ToPlayerButtonProps): JSX.Element {
 
   const dispatch = useDispatch();
   const toPlayer = useCallback(() => {
-    dispatch(redirectToRoute(AppRoute.Player.replace(':id', filmId.toString())));
+    dispatch(redirectToRoute(CreateAppRoute[AppRoute.Player](filmId)));
   }, [dispatch, filmId]);
 
   return (

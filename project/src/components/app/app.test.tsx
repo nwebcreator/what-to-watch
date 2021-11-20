@@ -13,8 +13,8 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 const store = mockStore({
-  [NameSpace.data]: { isDataLoaded: true, films: [], similarFilms: [], favoriteFilms: [], promoFilm: {name: 'promo test film'}, film: { name: 'test film name', starring: ['test starring', 'second starring'] } },
-  [NameSpace.user]: { authorizationStatus: AuthorizationStatus.Auth },
+  [NameSpace.Data]: { isDataLoaded: true, films: [], similarFilms: [], favoriteFilms: [], promoFilm: {name: 'promo test film'}, film: { name: 'test film name', starring: ['test starring', 'second starring'] } },
+  [NameSpace.User]: { authorizationStatus: AuthorizationStatus.Auth },
 });
 
 const history = createMemoryHistory();

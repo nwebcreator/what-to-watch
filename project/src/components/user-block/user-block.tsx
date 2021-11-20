@@ -14,9 +14,6 @@ function UserBlock(): JSX.Element {
     return (
       <ul className="user-block">
         <li className="user-block__item">
-          <span className="user-block__link">{authInfo?.email}</span>
-        </li>
-        <li className="user-block__item">
           <div className="user-block__avatar">
             <Link to={AppRoute.MyList}>
               <img src={authInfo?.avatarUrl ?? 'img/avatar.jpg'} alt="User avatar" width="63" height="63" />

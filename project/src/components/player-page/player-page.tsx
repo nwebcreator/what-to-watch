@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import useVideoPlayer from '../../hooks/use-video-player';
-import { AppRoute } from '../../routes';
+import { AppRoute, CreateAppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 import { fetchFilmAction } from '../../store/api-actions';
 import { getFilm } from '../../store/films-data/selectors';
@@ -26,8 +26,10 @@ function PlayerPage(): JSX.Element {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchFilmAction(id));
-  }, [dispatch, id]);
+    if (id && id !== film?.id) {
+      dispatch(fetchFilmAction(id));
+    }
+  }, [dispatch, id, film?.id]);
 
   if (!film) {
     return (
@@ -42,7 +44,7 @@ function PlayerPage(): JSX.Element {
       </video>
 
       <button type="button" className="player__exit" onClick={() => {
-        dispatch(redirectToRoute(AppRoute.Film.replace(':id', id.toString())));
+        dispatch(redirectToRoute(CreateAppRoute[AppRoute.Film](id)));
       }}
       >
         Exit

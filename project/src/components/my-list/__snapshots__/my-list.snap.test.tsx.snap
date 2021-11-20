@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: MyList should render correctly 1`] = `
+<div>
+  <div
+    class="user-page"
+  >
+    <header
+      class="page-header user-page__head"
+    >
+      <div
+        class="logo"
+      >
+        <a
+          class="logo__link"
+          href="/"
+        >
+          <span
+            class="logo__letter logo__letter--1"
+          >
+            W
+          </span>
+          <span
+            class="logo__letter logo__letter--2"
+          >
+            T
+          </span>
+          <span
+            class="logo__letter logo__letter--3"
+          >
+            W
+          </span>
+        </a>
+      </div>
+      <h1
+        class="page-title user-page__title"
+      >
+        My list
+      </h1>
+      <ul
+        class="user-block"
+      >
+        <li
+          class="user-block__item"
+        >
+          <div
+            class="user-block__avatar"
+          >
+            <a
+              href="/mylist"
+            >
+              <img
+                alt="User avatar"
+                height="63"
+                src="img/avatar.jpg"
+                width="63"
+              />
+            </a>
+          </div>
+        </li>
+        <li
+          class="user-block__item"
+        >
+          <button
+            class="user-block__link"
+            style="background: none;"
+          >
+            Sign out
+          </button>
+        </li>
+      </ul>
+    </header>
+    <section
+      class="catalog"
+    >
+      <h2
+        class="catalog__title visually-hidden"
+      >
+        Catalog
+      </h2>
+      <div
+        class="catalog__films-list"
+      />
+    </section>
+    <footer
+      class="page-footer"
+    >
+      <div
+        class="logo"
+      >
+        <a
+          class="logo__link logo__link--light"
+          href="/"
+        >
+          <span
+            class="logo__letter logo__letter--1"
+          >
+            W
+          </span>
+          <span
+            class="logo__letter logo__letter--2"
+          >
+            T
+          </span>
+          <span
+            class="logo__letter logo__letter--3"
+          >
+            W
+          </span>
+        </a>
+      </div>
+      <div
+        class="copyright"
+      >
+        <p>
+          © 2019 What to watch Ltd.
+        </p>
+      </div>
+    </footer>
+  </div>
+</div>
+`;

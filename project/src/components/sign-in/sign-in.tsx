@@ -1,21 +1,26 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginAction } from '../../store/api-actions';
+import { validateEmail, validatePassword } from '../../utils/validators';
 import Logo from '../logo/logo';
 
 function SignIn(): JSX.Element {
   const dispatch = useDispatch();
 
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [hasAttempt, setHasAttempt] = useState(false);
+
+  const isEmailValid = useMemo(() => validateEmail(email), [email]);
+  const isPasswordValid = useMemo(() => validatePassword(password), [password]);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
-    if (loginRef.current !== null && passwordRef.current !== null) {
+    setHasAttempt(true);
+    if (isEmailValid && isPasswordValid) {
       dispatch(loginAction({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
+        email,
+        password,
       }));
     }
   };
@@ -30,13 +35,21 @@ function SignIn(): JSX.Element {
 
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={handleSubmit}>
+          {hasAttempt && !isEmailValid &&
+            <div className="sign-in__message">
+              <p>Please enter a valid email address</p>
+            </div>}
+          {hasAttempt && !isPasswordValid &&
+            <div className="sign-in__message">
+              <p>Please enter a valid password</p>
+            </div>}
           <div className="sign-in__fields">
-            <div className="sign-in__field">
-              <input ref={loginRef} className="sign-in__input" type="email" placeholder="Email address" name="user-email" id="user-email" />
+            <div className={`sign-in__field ${hasAttempt && !isEmailValid && 'sign-in__field--error'}`}>
+              <input className="sign-in__input" type="email" placeholder="Email address" name="user-email" id="user-email" defaultValue={email} onChange={(evt) => setEmail(evt.target.value)} />
               <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
             </div>
-            <div className="sign-in__field">
-              <input ref={passwordRef} className="sign-in__input" type="password" placeholder="Password" name="user-password" id="user-password" />
+            <div className={`sign-in__field ${hasAttempt && !isPasswordValid && 'sign-in__field--error'}`}>
+              <input className="sign-in__input" type="password" placeholder="Password" name="user-password" id="user-password" defaultValue={password} onChange={(evt) => setPassword(evt.target.value)} />
               <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
             </div>
           </div>

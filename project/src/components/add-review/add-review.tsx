@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute } from '../../routes';
-import { redirectToRoute } from '../../store/action';
-import { addReviewAction, fetchFilmAction } from '../../store/api-actions';
+import { AppRoute, CreateAppRoute } from '../../routes';
+import { fetchFilmAction } from '../../store/api-actions';
 import { getFilm } from '../../store/films-data/selectors';
 import AddReviewForm from '../add-review-form/add-review-form';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -16,8 +15,10 @@ function AddReview(): JSX.Element {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchFilmAction(id));
-  }, [dispatch, id]);
+    if (id && id !== film?.id) {
+      dispatch(fetchFilmAction(id));
+    }
+  }, [dispatch, id, film?.id]);
 
   if (!film) {
     return (
@@ -40,7 +41,7 @@ function AddReview(): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link className="breadcrumbs__link" to={AppRoute.Film.replace(':id', id.toString())}>{film.name}</Link>
+                <Link className="breadcrumbs__link" to={CreateAppRoute[AppRoute.Film](id)}>{film.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <span className="breadcrumbs__link">Add review</span>
@@ -56,11 +57,7 @@ function AddReview(): JSX.Element {
         </div>
       </div>
 
-      <AddReviewForm onSubmit={(review) => {
-        dispatch(addReviewAction(id, review));
-        dispatch(redirectToRoute(`${AppRoute.Film}#reviews`.replace(':id', id.toString())));
-      }}
-      />
+      <AddReviewForm filmId={film.id} />
 
     </section>
   );

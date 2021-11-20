@@ -3,21 +3,39 @@ import { memo, useEffect } from 'react';
 import UserBlock from '../user-block/user-block';
 import FilmsList from '../films-list/films-list';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilms, getPromofilm } from '../../store/films-data/selectors';
+import { getFilms, getLoadedDataStatus, getPromofilm } from '../../store/films-data/selectors';
 import { changeShowedFilms } from '../../store/action';
 import { FILMS_PER_STEP } from '../../const';
 import MyListButton from '../my-list-button/my-list-button';
 import ToPlayerButton from '../to-player-button/to-player-button';
+import { fetchFilmsAction, fetchPromoAction } from '../../store/api-actions';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function Main(): JSX.Element {
+  const isDataLoaded = useSelector(getLoadedDataStatus);
   const promoFilm = useSelector(getPromofilm);
   const films = useSelector(getFilms);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!promoFilm?.id) {
+      dispatch(fetchPromoAction());
+    }
+
+    if (!isDataLoaded) {
+      dispatch(fetchFilmsAction());
+    }
+  }, [dispatch, promoFilm?.id, isDataLoaded]);
+
+  useEffect(() => {
     dispatch(changeShowedFilms(FILMS_PER_STEP));
   }, [dispatch]);
 
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <>
       <section className="film-card">
@@ -47,7 +65,7 @@ function Main(): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <ToPlayerButton filmId={promoFilm.id}/>
+                <ToPlayerButton filmId={promoFilm.id} />
                 <MyListButton film={promoFilm} />
               </div>
             </div>
