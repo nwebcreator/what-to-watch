@@ -46,24 +46,10 @@ exports[`Component: SignIn should render correctly 1`] = `
         class="sign-in__form"
       >
         <div
-          class="sign-in__message"
-        >
-          <p>
-            Please enter a valid email address
-          </p>
-        </div>
-        <div
-          class="sign-in__message"
-        >
-          <p>
-            Please enter a valid password
-          </p>
-        </div>
-        <div
           class="sign-in__fields"
         >
           <div
-            class="sign-in__field sign-in__field--error"
+            class="sign-in__field false"
           >
             <input
               class="sign-in__input"
@@ -81,7 +67,7 @@ exports[`Component: SignIn should render correctly 1`] = `
             </label>
           </div>
           <div
-            class="sign-in__field sign-in__field--error"
+            class="sign-in__field false"
           >
             <input
               class="sign-in__input"
