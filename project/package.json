@@ -2,7 +2,7 @@
   "name": "project",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nwebcreator.github.io/what-to-watch",
+  "homepage": "https://nwebcreator.github.io/what-to-watch/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "axios": "^0.21.1",
