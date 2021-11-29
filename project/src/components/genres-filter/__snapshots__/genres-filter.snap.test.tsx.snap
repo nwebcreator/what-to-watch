@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: GenresFilter should render correctly 1`] = `
+<div>
+  <ul
+    class="catalog__genres-list"
+  >
+    <li
+      class="catalog__genres-item"
+    >
+      <span
+        class="catalog__genres-link"
+        style="cursor: pointer;"
+      >
+        All genres
+      </span>
+    </li>
+    <li
+      class="catalog__genres-item"
+    >
+      <span
+        class="catalog__genres-link"
+        style="cursor: pointer;"
+      >
+        someGenreu
+      </span>
+    </li>
+  </ul>
+</div>
+`;

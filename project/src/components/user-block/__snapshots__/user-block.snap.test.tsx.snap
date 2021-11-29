@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: UserBlock should render correctly 1`] = `
+<div>
+  <ul
+    class="user-block"
+  >
+    <li
+      class="user-block__item"
+    >
+      <div
+        class="user-block__avatar"
+      >
+        <a
+          href="/mylist"
+        >
+          <img
+            alt="User avatar"
+            height="63"
+            src="img/avatar.jpg"
+            width="63"
+          />
+        </a>
+      </div>
+    </li>
+    <li
+      class="user-block__item"
+    >
+      <button
+        class="user-block__link"
+        style="background: none;"
+      >
+        Sign out
+      </button>
+    </li>
+  </ul>
+</div>
+`;

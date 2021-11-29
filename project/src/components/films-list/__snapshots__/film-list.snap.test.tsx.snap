@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: FilmsList should render correctly 1`] = `
+<div>
+  <section
+    class="catalog"
+  >
+    <h2
+      class="catalog__title visually-hidden"
+    >
+      Catalog
+    </h2>
+    <div
+      class="catalog__films-list"
+    />
+  </section>
+</div>
+`;

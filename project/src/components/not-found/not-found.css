@@ -1,0 +1,36 @@
+body {
+  background-color: #e8c3c4;
+  color: #180202;
+  line-height: normal;
+}
+
+.full-height {
+  height: 100vh;
+}
+
+.flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.position-r {
+  position: relative;
+}
+
+.code {
+  border-right: 3px solid;
+  font-size: 55px;
+  padding: 0 10px 0 10px;
+  text-align: center;
+}
+
+.message {
+  font-size: 40px;
+  text-align: center;
+}
+
+.link-return-url {
+  margin: 20px;
+  font-size: 20px;
+}
