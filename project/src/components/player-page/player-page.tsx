@@ -9,6 +9,10 @@ import { getFilm } from '../../store/films-data/selectors';
 import { formatDuration } from '../../utils';
 import LoadingScreen from '../loading-screen/loading-screen';
 
+import FullScreenSVG from '../../assets/img/icons/full-screen.svg';
+import PauseSVG from '../../assets/img/icons/pause.svg';
+import PlaySVG from '../../assets/img/icons/play-s.svg';
+
 function PlayerPage(): JSX.Element {
   const id = parseInt(useParams<{ id: string }>().id, 10);
   const film = useSelector(getFilm);
@@ -68,17 +72,13 @@ function PlayerPage(): JSX.Element {
 
         <div className="player__controls-row">
           <button type="button" className="player__play" onClick={() => togglePlay()}>
-            <svg viewBox="0 0 19 19" width="19" height="19">
-              <use xlinkHref={playerState.isPlaying ? '#pause' : '#play-s'}></use>
-            </svg>
+            {playerState.isPlaying ? <img src={PauseSVG} alt="Pause" /> : <img src={PlaySVG} alt="Play" />}
             <span>{playerState.isPlaying ? 'Pause' : 'Play'}</span>
           </button>
           <div className="player__name">{film.name}</div>
 
           <button type="button" className="player__full-screen" onClick={() => requestFullscreen()}>
-            <svg viewBox="0 0 27 27" width="27" height="27">
-              <use xlinkHref="#full-screen"></use>
-            </svg>
+            <img src={FullScreenSVG} alt="Full screen" />
             <span>Full screen</span>
           </button>
         </div>

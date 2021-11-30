@@ -4,6 +4,9 @@ import { changeFilmFavoriteStatus } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { Film } from '../../types/film';
 
+import InListSVG from '../../assets/img/icons/in-list.svg';
+import AddSVG from '../../assets/img/icons/add.svg';
+
 type MyListButtonProps = {
   film: Film
 }
@@ -17,13 +20,9 @@ function MyListButton({ film }: MyListButtonProps): JSX.Element | null {
     return (
       <button className="btn btn--list film-card__button" type="button" onClick={() => dispatch(changeFilmFavoriteStatus(film.id, !film.isFavorite))}>
         {film.isFavorite ?
-          <svg viewBox="0 0 18 14" width="18" height="14">
-            <use xlinkHref="#in-list"></use>
-          </svg>
+          <img src={InListSVG} alt="In list" />
           :
-          <svg viewBox="0 0 19 20" width="19" height="20">
-            <use xlinkHref="#add"></use>
-          </svg>}
+          <img src={AddSVG} alt="Add" />}
         <span>My list</span>
       </button>
     );

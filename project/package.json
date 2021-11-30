@@ -2,6 +2,7 @@
   "name": "project",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://nwebcreator.github.io/what-to-watch",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "axios": "^0.21.1",
@@ -18,10 +19,11 @@
     "start": "react-scripts start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run copy-and-rename",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
-    "eslint": "eslint --ext .tsx --ext .ts src/"
+    "eslint": "eslint --ext .tsx --ext .ts src/",
+    "copy-and-rename": "@powershell copy \"build/index.html\" build/404.html"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +58,7 @@
     "@types/react-redux": "^7.1.18",
     "@types/react-router-dom": "^5.3.0",
     "axios-mock-adapter": "^1.19.0",
+    "copyfiles": "^2.4.1",
     "eslint-config-htmlacademy": "^4.1.0",
     "faker": "^5.5.3",
     "gh-pages": "^3.2.3",

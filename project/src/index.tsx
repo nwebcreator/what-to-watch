@@ -15,6 +15,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './store/root-reducer';
 import browserHistory from './browser-history';
 
+import './assets/css/main.css';
+
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
   () => store.dispatch(redirectToRoute(AppRoute.NotFound)),

@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { AppRoute, CreateAppRoute } from '../../routes';
 import { redirectToRoute } from '../../store/action';
 
+import PlaySVG from '../../assets/img/icons/play-s.svg';
+
 type ToPlayerButtonProps = {
   filmId: number,
 };
@@ -16,9 +18,7 @@ function ToPlayerButton({ filmId }: ToPlayerButtonProps): JSX.Element {
 
   return (
     <button className="btn btn--play film-card__button" type="button" onClick={toPlayer}>
-      <svg viewBox="0 0 19 19" width="19" height="19">
-        <use xlinkHref="#play-s"></use>
-      </svg>
+      <img src={PlaySVG} alt="Play" />
       <span>Play</span>
     </button>
   );
